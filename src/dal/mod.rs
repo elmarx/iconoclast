@@ -1,4 +1,6 @@
+#[double]
 use crate::dal::dummy::DummyRepository;
+use mockall_double::double;
 use sqlx::Error;
 use sqlx::postgres::PgPoolOptions;
 
