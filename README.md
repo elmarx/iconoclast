@@ -7,6 +7,7 @@ Skeleton for a rust business application
 - [nextest](https://nexte.st/)
 - [bacon](https://dystroy.org/bacon/)
 - [systemfd](https://github.com/mitsuhiko/systemfd)
+- [just](https://just.systems/)
 
 ## Feature Flags
 
@@ -22,6 +23,7 @@ completely if not needed.
 
 - `bacon run` or `systemfd --no-pid -s http::8080 -- bacon run`
 - `bacon test` or `bacon nextest`
+- `just ci` to execute all relevant tests, checks etc. for the different feature-sets
 
 # Philosophy and design
 
