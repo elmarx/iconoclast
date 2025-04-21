@@ -5,6 +5,8 @@ use sqlx::Error;
 use sqlx::postgres::PgPoolOptions;
 
 pub mod dummy;
+#[cfg(test)]
+pub mod test;
 
 pub async fn init(url: &str) -> Result<DummyRepository, Error> {
     let pool = PgPoolOptions::new().max_connections(5).connect(url).await?;

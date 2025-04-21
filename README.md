@@ -45,5 +45,10 @@ So in production-code, imports need to be marked with `#[double]`.
 With mocked dependencies, it's possible to instantiate a router (without creating a service) as shown
 in [axum examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/src/main.rs)
 
+## Testcontainers
+
+Also, for DB-tests, iconoclast uses [testcontainers](https://docs.rs/testcontainers/0.23.3/testcontainers/). A single
+instance will spin up for all tests.
+
 ![Iconoclast](./doc/iconoclast.png)
 

@@ -20,3 +20,19 @@ impl DummyRepository {
         Ok(row.0)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::dal::dummy::DummyRepository;
+    use crate::dal::test::test_pool;
+
+    #[tokio::test]
+    async fn test_fetch_postgres() {
+        let pool = test_pool().await;
+
+        let repo = DummyRepository::new(pool);
+        let actual = repo.fetch(42).await.unwrap();
+
+        assert_eq!(42, actual);
+    }
+}
