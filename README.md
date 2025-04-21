@@ -37,5 +37,13 @@ completely if not needed.
 - services for logic where internal state is necessary (i.e.: access to repositories)
 - all other logic should go to pure functions
 
+# Testing
+
+For testing, *iconoclast* uses [mockall](https://docs.rs/mockall/0.13.1/mockall/#mocking-structs) to mock structs.
+So in production-code, imports need to be marked with `#[double]`.
+
+With mocked dependencies, it's possible to instantiate a router (without creating a service) as shown
+in [axum examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/src/main.rs)
+
 ![Iconoclast](./doc/iconoclast.png)
 

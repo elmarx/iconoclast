@@ -1,6 +1,7 @@
-#[derive(Default, Clone)]
+#[derive(Default)]
 pub struct Service {}
 
+#[cfg_attr(test, mockall::automock)]
 impl Service {
     pub fn message(&self) -> String {
         "Hello, World from Service!".to_string()
