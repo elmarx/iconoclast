@@ -1,0 +1,10 @@
+---
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: iconoclast
+      POSTGRES_USER: iconoclast
+      POSTGRES_PASSWORD: iconoclast
+    ports:
+      - "5432:5432"

@@ -8,6 +8,7 @@ use init::settings::Settings;
 use tikv_jemallocator::Jemalloc;
 use tokio::net::TcpListener;
 
+mod dal;
 mod handler;
 mod init;
 mod service;
@@ -21,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     let settings = Settings::emerge()?;
-    let Dependencies { hello_service } = dependencies::wire(settings);
+    let Dependencies { hello_service } = dependencies::wire(settings).await?;
 
     let app = Router::new().nest("/hello", handler::hello::init(hello_service));
 
