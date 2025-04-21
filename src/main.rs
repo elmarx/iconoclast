@@ -1,9 +1,15 @@
 use axum::Router;
+
+use crate::init::dependencies::Dependencies;
+use init::dependencies;
+use init::settings::Settings;
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 use tokio::net::TcpListener;
 
 mod handler;
+mod init;
+mod service;
 
 #[cfg(not(target_env = "msvc"))]
 #[global_allocator]
@@ -13,7 +19,10 @@ static GLOBAL: Jemalloc = Jemalloc;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
-    let app = Router::new().nest("/hello", handler::hello::init());
+    let settings = Settings::emerge()?;
+    let Dependencies { hello_service } = dependencies::wire(settings);
+
+    let app = Router::new().nest("/hello", handler::hello::init(hello_service));
 
     #[cfg(feature = "listenfd")]
     let listener = {
