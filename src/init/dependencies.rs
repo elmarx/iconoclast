@@ -9,7 +9,9 @@ pub struct Dependencies {
 }
 
 pub async fn wire(settings: &Settings) -> Result<Dependencies, Infallible> {
-    let repo = crate::dal::init(&settings.db_url).await.unwrap();
+    let repo = crate::dal::init(settings.database_url.as_deref())
+        .await
+        .unwrap();
     let hello_service = HelloService::new(repo);
 
     Ok(Dependencies { hello_service })
