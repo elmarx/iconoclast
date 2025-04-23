@@ -1,5 +1,8 @@
+use crate::init::kafka;
+use crate::init::kafka::KafkaPropertyValue;
 use config::{ConfigError, Environment, File, FileFormat};
 use serde::Deserialize;
+use std::collections::HashMap;
 
 const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 
@@ -9,6 +12,15 @@ pub struct Settings {
 
     // if no url is given, connection parameters will be read from env: https://docs.rs/sqlx/latest/sqlx/postgres/struct.PgConnectOptions.html#parameters
     pub database_url: Option<String>,
+    pub kafka: Kafka,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Kafka {
+    #[serde(skip)]
+    pub env_properties: Vec<(String, String)>,
+    #[serde(flatten, default)]
+    pub properties: HashMap<String, KafkaPropertyValue>,
 }
 
 impl Settings {
@@ -21,6 +33,11 @@ impl Settings {
             .add_source(Environment::with_prefix("ICONOCLAST").separator("_"))
             .build();
 
-        settings?.try_deserialize::<Settings>()
+        let kafka_properties = kafka::from_env(std::env::vars());
+
+        settings?.try_deserialize::<Settings>().map(|mut s| {
+            s.kafka.env_properties = kafka_properties;
+            s
+        })
     }
 }
