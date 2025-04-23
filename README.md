@@ -1,5 +1,7 @@
 # Iconoclast
 
+<img src="./doc/iconoclast.png" alt="Iconoclast" style="width: 300px; margin-left: 10px;" align="right" />
+
 Skeleton for a rust business application
 
 ## Tools to install
@@ -49,6 +51,4 @@ in [axum examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/s
 
 Also, for DB-tests, iconoclast uses [testcontainers](https://docs.rs/testcontainers/0.23.3/testcontainers/). A single
 instance will spin up for all tests.
-
-![Iconoclast](./doc/iconoclast.png)
 
