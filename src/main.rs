@@ -22,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     let settings = Settings::emerge()?;
-    let Dependencies { hello_service } = dependencies::wire(settings).await?;
+    let Dependencies { hello_service } = dependencies::wire(&settings).await?;
 
     let app = Router::new().nest("/hello", handler::hello::init(hello_service));
 
@@ -34,11 +34,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 listener.set_nonblocking(true)?;
                 TcpListener::from_std(listener)
             }
-            None => TcpListener::bind("0.0.0.0:8080").await,
+            None => TcpListener::bind(("0.0.0.0", settings.port)).await,
         }?
     };
     #[cfg(not(feature = "listenfd"))]
-    let listener = TcpListener::bind("0.0.0.0:8080").await?;
+    let listener = TcpListener::bind(("0.0.0.0", settings.port)).await?;
 
     axum::serve(listener, app).await?;
 

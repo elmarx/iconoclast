@@ -1,0 +1,3 @@
+port = 8080
+
+db_url = "postgres://iconoclast:iconoclast@localhost/iconoclast"
