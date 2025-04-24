@@ -8,6 +8,7 @@ mod dal;
 mod error;
 mod handler;
 mod init;
+mod management;
 mod server;
 mod service;
 
@@ -22,9 +23,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let settings = Settings::emerge()?;
     let dependencies = dependencies::wire(&settings).await?;
 
-    let main_server = server::start_main(&settings, dependencies);
-
-    main_server.await?;
+    let (_main_server, _management_server) = tokio::join!(
+        server::start_main(&settings, dependencies),
+        management::start_management(&settings)
+    );
 
     Ok(())
 }

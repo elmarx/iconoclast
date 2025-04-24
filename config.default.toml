@@ -1,5 +1,8 @@
 port = 8080
 
+# port for health-checks, metrics etc.
+management_port = 9000
+
 database_url = "postgres://iconoclast:iconoclast@localhost/iconoclast"
 
 [kafka]
