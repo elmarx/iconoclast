@@ -9,6 +9,7 @@ use tikv_jemallocator::Jemalloc;
 use tokio::net::TcpListener;
 
 mod dal;
+mod error;
 mod handler;
 mod init;
 mod service;

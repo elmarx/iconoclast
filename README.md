@@ -52,3 +52,11 @@ in [axum examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/s
 Also, for DB-tests, iconoclast uses [testcontainers](https://docs.rs/testcontainers/0.23.3/testcontainers/). A single
 instance will spin up for all tests.
 
+# Error Handling
+
+- use [`thiserror`](https://docs.rs/thiserror/latest/thiserror/) to wrap errors for each layer
+- *panicking* during startup/on top level is ok
+- For axum: implement error handler (
+  TODO: [implement iconoclast example](https://github.com/tokio-rs/axum/blob/main/examples/error-handling/src/main.rs#L158-L186))
+- or easy 500 errors
+  with [InternalServerError](https://docs.rs/axum-extra/latest/axum_extra/response/struct.InternalServerError.html)

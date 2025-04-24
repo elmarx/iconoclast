@@ -16,6 +16,7 @@ mockall_double = "0.3.1"
 rdkafka = { version = "0.37.0", features = ["sasl", "ssl", "zstd"] }
 serde = { version = "1.0.219", features = ["derive"] }
 sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
+thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing-subscriber = "0.3.19"
 

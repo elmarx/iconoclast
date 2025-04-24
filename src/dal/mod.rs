@@ -1,10 +1,12 @@
 #[double]
 use crate::dal::dummy::DummyRepository;
+pub use error::Error;
 use mockall_double::double;
+use sqlx::PgPool;
 use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
-use sqlx::{Error, PgPool};
 
 pub mod dummy;
+mod error;
 #[cfg(test)]
 pub mod test;
 
