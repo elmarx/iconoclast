@@ -3,7 +3,7 @@ use std::string::FromUtf8Error;
 
 pub const TOPIC: &str = "hello";
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum HelloMessage {
     Name(String),
     Tombstone,
