@@ -70,3 +70,67 @@ impl IconoclastConsumer {
             .await
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::consumer::IconoclastConsumer;
+    use crate::consumer::hello::HelloMessage;
+    use crate::init::settings;
+    use crate::service::hello::MockService;
+    use rdkafka::ClientConfig;
+    use rdkafka::producer::{FutureProducer, FutureRecord};
+    use std::collections::HashMap;
+    use tokio::sync::oneshot;
+
+    async fn publish(brokers: String, topic: &str, key: &str, payload: &str) {
+        let producer: FutureProducer = ClientConfig::new()
+            .set("bootstrap.servers", brokers)
+            .create()
+            .unwrap();
+
+        let record = FutureRecord::to(topic).payload(payload).key(key);
+        producer.send(record, None).await.unwrap();
+    }
+
+    /// test that a message sent through kafka ends up in call to the (mock-) Service
+    #[tokio::test]
+    async fn smoketest() {
+        // set up a mock that sends the value (once), as we need to wait for the value
+        let (tx, rx) = oneshot::channel::<HelloMessage>();
+        let mut service = MockService::default();
+        service.expect_handle().return_once(|m| {
+            tx.send(m).unwrap();
+            Ok(())
+        });
+
+        // the test never exits. mem::drop() on the cluster doesn't help, this… seems to help somehow :/
+        let cluster = Box::leak(Box::new(rdkafka::mocking::MockCluster::new(3).unwrap()));
+        cluster.create_topic(super::hello::TOPIC, 12, 3).unwrap();
+
+        let config = settings::Kafka {
+            env_properties: vec![
+                ("bootstrap.servers".to_string(), cluster.bootstrap_servers()),
+                ("group.id".to_string(), "smoketest".to_string()),
+                ("auto.offset.reset".to_string(), "earliest".to_string()),
+                ("enable.auto.commit".to_string(), "false".to_string()),
+            ],
+            properties: HashMap::new(),
+        };
+
+        let consumer = IconoclastConsumer::new(&config, service).unwrap();
+
+        let task = tokio::task::spawn(async move { consumer.run().await });
+
+        publish(
+            cluster.bootstrap_servers(),
+            super::hello::TOPIC,
+            "1",
+            "Ferris",
+        )
+        .await;
+
+        let actual = rx.await.unwrap();
+        assert_eq!(HelloMessage::Name("Ferris".to_string()), actual);
+        task.abort();
+    }
+}
