@@ -1,5 +1,6 @@
 use sqlx::{Pool, Postgres};
 
+#[derive(Clone)]
 pub struct DummyRepository {
     pool: Pool<Postgres>,
 }
@@ -18,6 +19,14 @@ impl DummyRepository {
             .await?;
 
         Ok(row.0)
+    }
+}
+
+#[cfg(test)]
+impl Clone for MockDummyRepository {
+    fn clone(&self) -> Self {
+        // cloning a mock doesn't make sense
+        unimplemented!()
     }
 }
 

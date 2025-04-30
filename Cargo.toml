@@ -19,6 +19,8 @@ sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native
 thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing-subscriber = "0.3.19"
+tokio-stream = "0.1.17"
+futures = "0.3.31"
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 tikv-jemallocator = "0.6"
