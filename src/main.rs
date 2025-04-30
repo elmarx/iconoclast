@@ -1,6 +1,6 @@
-use init::dependencies;
 use init::settings::Settings;
 
+use crate::init::dependencies::BuildingBlocks;
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 
@@ -21,10 +21,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt::init();
 
     let settings = Settings::emerge()?;
-    let dependencies = dependencies::wire(&settings).await?;
+    let BuildingBlocks { app } = BuildingBlocks::wire(&settings).await?;
 
     let (_main_server, _management_server) = tokio::join!(
-        server::start_main(&settings, dependencies),
+        server::start_main(&settings, app),
         management::start_management(&settings)
     );
 

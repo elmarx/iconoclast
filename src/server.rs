@@ -1,15 +1,9 @@
-use crate::handler;
-use crate::init::dependencies::Dependencies;
 use crate::init::settings::Settings;
 use axum::Router;
 use tokio::io;
 use tokio::net::TcpListener;
 
-pub async fn start_main(settings: &Settings, dependencies: Dependencies) -> Result<(), io::Error> {
-    let Dependencies { hello_service } = dependencies;
-
-    let app = Router::new().nest("/hello", handler::hello::init(hello_service));
-
+pub async fn start_main(settings: &Settings, app: Router) -> Result<(), io::Error> {
     #[cfg(feature = "listenfd")]
     let listener = {
         let mut listenfd = listenfd::ListenFd::from_env();

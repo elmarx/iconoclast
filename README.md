@@ -33,11 +33,11 @@ completely if not needed.
 - (axum-) handlers accept requests, validate input and call the relevant logic (functions or services)
     - handlers are broken into modules that each get passed their dependencies and return a router (each with their own
       state)
-    - main assembles the sub-routers
 - manual dependency-injection, wiring of the dependencies in module `init::dependencies`
 - configuration in module `init::settings`
 - services for logic where internal state is necessary (i.e.: access to repositories)
 - all other logic should go to pure functions
+- `main()` "starts" all the building blocks
 
 # Testing
 
