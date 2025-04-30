@@ -17,7 +17,7 @@ pub(super) fn from_env(env_vars: impl Iterator<Item = (String, String)>) -> Vec<
 
 /// type to accept all values allowed by rdkafka.
 /// rdkafka expects all properties as Into<String>, this enables to write numbers into toml without quotes
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(untagged)]
 pub enum KafkaPropertyValue {
     String(String),

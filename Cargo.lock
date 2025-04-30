@@ -1116,6 +1116,7 @@ dependencies = [
  "axum",
  "axum-extra",
  "config",
+ "futures",
  "http-body-util",
  "listenfd",
  "mockall",
@@ -1129,6 +1130,7 @@ dependencies = [
  "thiserror",
  "tikv-jemallocator",
  "tokio",
+ "tokio-stream",
  "tower",
  "tracing-subscriber",
 ]

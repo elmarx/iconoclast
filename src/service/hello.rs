@@ -1,10 +1,15 @@
+use crate::consumer::hello::HelloMessage;
 #[double]
 use crate::dal::dummy::DummyRepository;
 use mockall_double::double;
 
+#[derive(Clone)]
 pub struct Service {
     repo: DummyRepository,
 }
+
+#[derive(thiserror::Error, Debug)]
+pub enum Error {}
 
 #[cfg_attr(test, mockall::automock)]
 impl Service {
@@ -18,6 +23,23 @@ impl Service {
 
     pub async fn number(&self) -> Result<i64, sqlx::Error> {
         self.repo.fetch(4).await
+    }
+
+    pub async fn handle(&self, m: HelloMessage) -> Result<(), Error> {
+        match m {
+            HelloMessage::Name(name) => println!("Hello {name}!"),
+            HelloMessage::Tombstone => println!("someone is dead"),
+        }
+
+        Ok(())
+    }
+}
+
+#[cfg(test)]
+impl Clone for MockService {
+    fn clone(&self) -> Self {
+        // cloning a mock doesn't make sense
+        unimplemented!()
     }
 }
 

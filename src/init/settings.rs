@@ -16,7 +16,7 @@ pub struct Settings {
     pub kafka: Kafka,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Kafka {
     #[serde(skip)]
     pub env_properties: Vec<(String, String)>,
