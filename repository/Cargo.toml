@@ -1,0 +1,19 @@
+[package]
+name = "repository"
+version = "0.1.0"
+edition = "2024"
+description = "Repository Layer for service"
+
+[dependencies]
+sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
+thiserror = "2.0.12"
+faux = { version = "0.1.12", optional = true }
+
+[dev-dependencies]
+testcontainers = "0.23.3"
+testcontainers-modules = { version = "0.11.6", features = ["postgres"] }
+tokio = { version = "1.44.2", default-features = false, features = ["rt", "macros"] }
+faux = "0.1.12"
+
+[features]
+faux = ["dep:faux"]

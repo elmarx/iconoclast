@@ -2,7 +2,7 @@ name: Renovate
 on:
   schedule:
     - cron: '0 6 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch: { }
   push:
     branches:
       - master
@@ -10,6 +10,7 @@ on:
       - .github/workflows/renovate.yaml
       - .github/renovate-global.json
       - .github/renovate.json5
+      - "**/Cargo.toml"
       - "Cargo.toml"
       - "Cargo.lock"
 jobs:

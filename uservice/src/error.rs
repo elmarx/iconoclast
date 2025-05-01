@@ -1,4 +1,3 @@
-use crate::dal;
 use config::ConfigError;
 use rdkafka::error::KafkaError;
 
@@ -6,7 +5,7 @@ use rdkafka::error::KafkaError;
 #[derive(Debug, thiserror::Error)]
 pub enum AppError {
     #[error(transparent)]
-    Dal(#[from] dal::Error),
+    Dal(#[from] repository::Error),
     #[error(transparent)]
     ConfigError(#[from] ConfigError),
     #[error(transparent)]

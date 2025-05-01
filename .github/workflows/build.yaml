@@ -33,7 +33,7 @@ jobs:
 
       - name: get crate version from Cargo.toml
         id: cargo_version
-        run: echo version=$(awk -F '"' '/^version =/ { print $2 }' Cargo.toml) >> $GITHUB_OUTPUT
+        run: echo version=$(awk -F '"' '/^version =/ { print $2 }' uservice/Cargo.toml) >> $GITHUB_OUTPUT
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta

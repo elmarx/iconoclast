@@ -26,7 +26,7 @@ async fn hello(State(service): State<Arc<HelloService>>) -> impl IntoResponse {
 
 async fn sql(
     State(service): State<Arc<HelloService>>,
-) -> Result<String, InternalServerError<sqlx::Error>> {
+) -> Result<String, InternalServerError<repository::SqlxError>> {
     let number = service.number().await.map_err(InternalServerError)?;
     Ok(format!("{number}"))
 }
@@ -38,6 +38,7 @@ mod test {
     use axum::body::Body;
     use axum::http::{Request, StatusCode};
     use http_body_util::BodyExt;
+    use repository::SqlxError;
     use serde_json::Value;
     use tower::ServiceExt;
 
@@ -86,7 +87,7 @@ mod test {
         let mut hello_service = HelloService::default();
         hello_service
             .expect_number()
-            .returning(|| Err(sqlx::Error::PoolClosed));
+            .returning(|| Err(SqlxError::PoolClosed));
 
         let app = init(hello_service);
 

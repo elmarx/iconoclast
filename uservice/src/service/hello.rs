@@ -1,7 +1,5 @@
 use crate::consumer::hello::HelloMessage;
-#[double]
-use crate::dal::dummy::DummyRepository;
-use mockall_double::double;
+use repository::dummy::DummyRepository;
 use tracing::{info, warn};
 
 #[derive(Clone)]
@@ -22,7 +20,7 @@ impl Service {
         "Hello, World from Service!".to_string()
     }
 
-    pub async fn number(&self) -> Result<i64, sqlx::Error> {
+    pub async fn number(&self) -> Result<i64, repository::SqlxError> {
         self.repo.fetch(4).await
     }
 
@@ -46,12 +44,12 @@ impl Clone for MockService {
 
 #[cfg(test)]
 mod test {
-    use crate::dal::dummy::MockDummyRepository;
     use crate::service::hello;
+    use repository::dummy::DummyRepository;
 
     #[test]
     fn test_message() {
-        let repo = MockDummyRepository::default();
+        let repo = DummyRepository::faux();
 
         let service = hello::Service::new(repo);
         let actual = service.message();
@@ -62,8 +60,8 @@ mod test {
 
     #[tokio::test]
     async fn test_number() {
-        let mut repo = MockDummyRepository::default();
-        repo.expect_fetch().returning(|_| Ok(42));
+        let mut repo = DummyRepository::faux();
+        faux::when!(repo.fetch).then(|_| Ok(42));
 
         let service = hello::Service::new(repo);
         let actual = service.number().await.unwrap();

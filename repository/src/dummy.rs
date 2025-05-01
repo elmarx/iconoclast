@@ -1,17 +1,25 @@
 use sqlx::{Pool, Postgres};
 
+#[cfg_attr(any(test, feature = "faux"), faux::create)]
 #[derive(Clone)]
 pub struct DummyRepository {
     pool: Pool<Postgres>,
 }
 
-#[cfg_attr(test, mockall::automock)]
+/// dummy repository for very basic testing/showcasing.
+#[cfg_attr(any(test, feature = "faux"), faux::methods)]
 impl DummyRepository {
+    #[must_use]
     pub fn new(pool: &Pool<Postgres>) -> Self {
         let pool = pool.clone();
         Self { pool }
     }
 
+    /// Run SQL without accessing any tables.
+    ///
+    /// # Errors
+    ///
+    /// Fails for any db related error
     pub async fn fetch(&self, id: i64) -> Result<i64, sqlx::Error> {
         let row: (i64,) = sqlx::query_as("SELECT $1")
             .bind(id)
@@ -23,17 +31,9 @@ impl DummyRepository {
 }
 
 #[cfg(test)]
-impl Clone for MockDummyRepository {
-    fn clone(&self) -> Self {
-        // cloning a mock doesn't make sense
-        unimplemented!()
-    }
-}
-
-#[cfg(test)]
 mod test {
-    use crate::dal::dummy::DummyRepository;
-    use crate::dal::test::test_pool;
+    use crate::dummy::DummyRepository;
+    use crate::test::test_pool;
 
     #[tokio::test]
     async fn test_fetch_postgres() {
