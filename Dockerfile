@@ -4,18 +4,20 @@ WORKDIR /usr/src
 
 RUN apt-get update && apt-get install -y libssl-dev libsasl2-dev clang
 
+RUN mkdir uservice
 COPY Cargo.toml Cargo.lock ./
+COPY uservice/Cargo.toml uservice/
 
 # compile all dependencies with a dummy for improved caching
-RUN mkdir -p src/bin && \
-  echo "fn main() { println!(\"Dummy\"); }" > src/bin/dummy.rs && \
+RUN mkdir -p uservice/src/bin && \
+  echo "fn main() { println!(\"Dummy\"); }" > uservice/src/bin/dummy.rs && \
   cargo build --release && \
-  rm -rf src
+  rm -rf uservice/src
 
 # now compile the real code
 COPY ./config.default.toml .
-COPY src src
-RUN cargo install --locked --path . --root /usr/local
+COPY uservice uservice
+RUN cargo install --locked --path uservice --root /usr/local
 
 FROM debian:stable-slim
 

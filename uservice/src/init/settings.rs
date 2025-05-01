@@ -5,7 +5,7 @@ use config::{ConfigError, Environment, File, FileFormat};
 use serde::Deserialize;
 use std::collections::HashMap;
 
-const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
+const DEFAULT_CONFIG: &str = include_str!("../../../config.default.toml");
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
