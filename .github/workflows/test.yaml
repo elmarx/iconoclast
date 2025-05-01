@@ -1,0 +1,28 @@
+name: test
+on: [ push, pull_request ]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
+
+      - name: install required native libs
+        run: sudo apt-get install libsasl2-dev
+
+      - run: cargo fmt --check
+      - run: cargo check --all-targets
+      - run: cargo check --all-targets --no-default-features
+      - name: Run Tests
+        run: cargo nextest run
+
+      - uses: crusty-pie/clippy@v1
+        with:
+          args: --all-features --all-targets
