@@ -2,6 +2,7 @@ use crate::consumer::hello::HelloMessage;
 #[double]
 use crate::dal::dummy::DummyRepository;
 use mockall_double::double;
+use tracing::{info, warn};
 
 #[derive(Clone)]
 pub struct Service {
@@ -27,8 +28,8 @@ impl Service {
 
     pub async fn handle(&self, m: HelloMessage) -> Result<(), Error> {
         match m {
-            HelloMessage::Name(name) => println!("Hello {name}!"),
-            HelloMessage::Tombstone => println!("someone is dead"),
+            HelloMessage::Name(name) => info!("Hello {name}!"),
+            HelloMessage::Tombstone => warn!("someone is dead"),
         }
 
         Ok(())

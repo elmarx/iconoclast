@@ -1,3 +1,4 @@
+use crate::infra::logging;
 use crate::init::kafka;
 use crate::init::kafka::KafkaPropertyValue;
 use config::{ConfigError, Environment, File, FileFormat};
@@ -10,6 +11,8 @@ const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 pub struct Settings {
     pub port: u16,
     pub management_port: u16,
+    /// format to log.
+    pub logging: logging::Format,
 
     // if no url is given, connection parameters will be read from env: https://docs.rs/sqlx/latest/sqlx/postgres/struct.PgConnectOptions.html#parameters
     pub database_url: Option<String>,

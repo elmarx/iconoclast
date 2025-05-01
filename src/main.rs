@@ -1,8 +1,10 @@
 use init::settings::Settings;
 
+use crate::infra::logging;
 use crate::init::dependencies::BuildingBlocks;
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
+use tracing::info;
 
 mod consumer;
 mod dal;
@@ -19,9 +21,12 @@ static GLOBAL: Jemalloc = Jemalloc;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt::init();
-
     let settings = Settings::emerge()?;
+
+    logging::init(&settings.logging).await;
+
+    info!("{settings:?}");
+
     let BuildingBlocks { app, consumer } = BuildingBlocks::wire(&settings).await?;
 
     let (_main_server, _management_server, _consumer) = tokio::join!(
