@@ -1,6 +1,5 @@
-use crate::init::kafka;
-use crate::init::kafka::KafkaPropertyValue;
 use config::{ConfigError, Environment, File, FileFormat};
+use infra::kafka;
 use infra::logging;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -24,7 +23,7 @@ pub struct Kafka {
     #[serde(skip)]
     pub env_properties: Vec<(String, String)>,
     #[serde(flatten, default)]
-    pub properties: HashMap<String, KafkaPropertyValue>,
+    pub properties: HashMap<String, kafka::PropertyValue>,
 }
 
 impl Settings {

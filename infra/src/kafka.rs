@@ -1,46 +1,44 @@
+//! helpers to configure kafka conveniently via TOML and environment variables
+
 use serde::Deserialize;
 
 /// collect env-vars into kafka-properties
 /// e.g. turns `KAFKA_BOOTSTRAP_SERVERS` into `bootstrap.servers`
-pub(super) fn from_env(env_vars: impl Iterator<Item = (String, String)>) -> Vec<(String, String)> {
+pub fn from_env(env_vars: impl Iterator<Item = (String, String)>) -> Vec<(String, String)> {
     env_vars
         .filter_map(|(k, v)| {
-            k.strip_prefix("KAFKA_").map(|prop| {
-                (
-                    prop.replace('_', ".").to_lowercase().to_string(),
-                    v.to_string(),
-                )
-            })
+            k.strip_prefix("KAFKA_")
+                .map(|prop| (prop.replace('_', ".").to_lowercase(), v.to_string()))
         })
         .collect()
 }
 
 /// type to accept all values allowed by rdkafka.
-/// rdkafka expects all properties as Into<String>, this enables to write numbers into toml without quotes
+/// [`rdkafka::config::ClientConfig`] expects all properties as `Into<String>`, this enables to write numbers (and booleans) into toml without quotes
 #[derive(Debug, Deserialize, Clone)]
 #[serde(untagged)]
-pub enum KafkaPropertyValue {
+pub enum PropertyValue {
     String(String),
     Bool(bool),
     Integer(i64),
 }
 
-impl From<&KafkaPropertyValue> for String {
-    fn from(v: &KafkaPropertyValue) -> Self {
+impl From<&PropertyValue> for String {
+    fn from(v: &PropertyValue) -> Self {
         match v {
-            KafkaPropertyValue::String(s) => s.clone(),
-            KafkaPropertyValue::Bool(b) => b.to_string(),
-            KafkaPropertyValue::Integer(i) => i.to_string(),
+            PropertyValue::String(s) => s.clone(),
+            PropertyValue::Bool(b) => b.to_string(),
+            PropertyValue::Integer(i) => i.to_string(),
         }
     }
 }
 
-impl From<KafkaPropertyValue> for String {
-    fn from(v: KafkaPropertyValue) -> Self {
+impl From<PropertyValue> for String {
+    fn from(v: PropertyValue) -> Self {
         match v {
-            KafkaPropertyValue::String(s) => s,
-            KafkaPropertyValue::Bool(b) => b.to_string(),
-            KafkaPropertyValue::Integer(i) => i.to_string(),
+            PropertyValue::String(s) => s,
+            PropertyValue::Bool(b) => b.to_string(),
+            PropertyValue::Integer(i) => i.to_string(),
         }
     }
 }
