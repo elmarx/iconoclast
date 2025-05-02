@@ -1,20 +1,18 @@
 //! Known topics. Here we list all the topics we listen to and parse the kafka payload based on the topic
 
-use crate::consumer::hello;
-use crate::consumer::hello::HelloMessage;
+use model::messages::hello;
 use rdkafka::Message;
 use rdkafka::message::BorrowedMessage;
-use std::string::FromUtf8Error;
 use thiserror::Error;
 
 pub enum Payload {
-    Hello(HelloMessage),
+    Hello(hello::Message),
 }
 
 #[derive(Debug, Error)]
 pub enum ParseError {
     #[error(transparent)]
-    HelloMessage(FromUtf8Error),
+    HelloMessage(hello::Error),
 }
 
 // add a match-arm in the TryFrom for every topic!
@@ -24,7 +22,7 @@ impl TryFrom<&BorrowedMessage<'_>> for Payload {
     type Error = ParseError;
     fn try_from(message: &BorrowedMessage) -> Result<Self, Self::Error> {
         match message.topic() {
-            hello::TOPIC => HelloMessage::try_from(message.payload())
+            hello::TOPIC => hello::Message::try_from(message.payload())
                 .map_err(ParseError::HelloMessage)
                 .map(Payload::Hello),
             t => unimplemented!("Unknown topic {}", t),

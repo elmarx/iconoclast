@@ -6,17 +6,20 @@ RUN apt-get update && apt-get install -y libssl-dev libsasl2-dev clang
 
 RUN mkdir -p \
     infra/src \
+    model/src \
     repository/src \
     uservice
 
 COPY Cargo.toml Cargo.lock ./
 COPY infra/Cargo.toml infra/
+COPY model/Cargo.toml model/
 COPY repository/Cargo.toml repository/
 COPY uservice/Cargo.toml uservice/
 
 # compile all dependencies with a dummy for improved caching
 RUN mkdir -p uservice/src/bin && \
   touch infra/src/lib.rs && \
+  touch model/src/lib.rs && \
   touch repository/src/lib.rs && \
   echo "fn main() { println!(\"Dummy\"); }" > uservice/src/bin/dummy.rs && \
   cargo build --release && \
@@ -25,11 +28,12 @@ RUN mkdir -p uservice/src/bin && \
 # now compile the real code
 COPY ./config.default.toml .
 COPY infra infra
+COPY model model
 COPY repository repository
 COPY uservice uservice
 
 # update the timestamps so cargo picks up the actual code
-RUN touch infra/src/lib.rs repository/src/lib.rs
+RUN touch infra/src/lib.rs model/src/lib.rs repository/src/lib.rs
 
 RUN cargo install --locked --path uservice --root /usr/local
 

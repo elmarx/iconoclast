@@ -1175,6 +1175,7 @@ dependencies = [
  "infra",
  "mockall",
  "mockall_double",
+ "model",
  "rdkafka",
  "repository",
  "serde",
@@ -1620,6 +1621,10 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "model"
+version = "0.1.0"
 
 [[package]]
 name = "nom"

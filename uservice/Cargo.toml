@@ -24,6 +24,7 @@ tokio-stream = "0.1.17"
 futures = "0.3.31"
 repository = { path = "../repository" }
 infra = { path = "../infra" }
+model = { path = "../model" }
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 tikv-jemallocator = "0.6"

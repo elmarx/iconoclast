@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = [ "infra", "repository","uservice"]
+members = ["infra", "model", "repository", "uservice"]
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3

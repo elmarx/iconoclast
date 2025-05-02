@@ -1,4 +1,4 @@
-use crate::consumer::hello::HelloMessage;
+use model::messages::hello;
 use repository::dummy::DummyRepository;
 use tracing::{info, warn};
 
@@ -24,10 +24,10 @@ impl Service {
         self.repo.fetch(4).await
     }
 
-    pub async fn handle(&self, m: HelloMessage) -> Result<(), Error> {
+    pub async fn handle(&self, m: hello::Message) -> Result<(), Error> {
         match m {
-            HelloMessage::Name(name) => info!("Hello {name}!"),
-            HelloMessage::Tombstone => warn!("someone is dead"),
+            hello::Message::Name(name) => info!("Hello {name}!"),
+            hello::Message::Tombstone => warn!("someone is dead"),
         }
 
         Ok(())

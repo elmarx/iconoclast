@@ -13,11 +13,6 @@ use tokio_stream::StreamExt;
 
 pub mod topic;
 
-pub mod hello;
-
-/// the payload used for kafka messages
-pub type KafkaPayload<'a> = Option<&'a [u8]>;
-
 /// all errors that may happen during strem processing
 #[derive(Error, Debug)]
 pub enum StreamError {
@@ -74,9 +69,9 @@ impl IconoclastConsumer {
 #[cfg(test)]
 mod test {
     use crate::consumer::IconoclastConsumer;
-    use crate::consumer::hello::HelloMessage;
     use crate::init::settings;
     use crate::service::hello::MockService;
+    use model::messages::hello::{Message as HelloMessage, TOPIC};
     use rdkafka::ClientConfig;
     use rdkafka::producer::{FutureProducer, FutureRecord};
     use std::collections::HashMap;
@@ -105,7 +100,7 @@ mod test {
 
         // the test never exits. mem::drop() on the cluster doesn't help, this… seems to help somehow :/
         let cluster = Box::leak(Box::new(rdkafka::mocking::MockCluster::new(3).unwrap()));
-        cluster.create_topic(super::hello::TOPIC, 12, 3).unwrap();
+        cluster.create_topic(TOPIC, 12, 3).unwrap();
 
         let config = settings::Kafka {
             env_properties: vec![
@@ -121,13 +116,7 @@ mod test {
 
         let task = tokio::task::spawn(async move { consumer.run().await });
 
-        publish(
-            cluster.bootstrap_servers(),
-            super::hello::TOPIC,
-            "1",
-            "Ferris",
-        )
-        .await;
+        publish(cluster.bootstrap_servers(), TOPIC, "1", "Ferris").await;
 
         let actual = rx.await.unwrap();
         assert_eq!(HelloMessage::Name("Ferris".to_string()), actual);
