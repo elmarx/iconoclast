@@ -1,7 +1,7 @@
-use crate::infra::logging;
 use crate::init::kafka;
 use crate::init::kafka::KafkaPropertyValue;
 use config::{ConfigError, Environment, File, FileFormat};
+use infra::logging;
 use serde::Deserialize;
 use std::collections::HashMap;
 

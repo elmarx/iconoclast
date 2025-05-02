@@ -1,5 +1,5 @@
 #[cfg(feature = "gcloud")]
-use crate::infra::gcloud;
+use crate::gcloud;
 use serde::Deserialize;
 #[cfg(feature = "gcloud")]
 use tracing::{info, warn};
@@ -20,6 +20,8 @@ pub enum Format {
     Stackdriver,
 }
 
+/// initialize logging, i.e. the tracing subscriber.
+#[cfg_attr(not(feature = "gcloud"), expect(clippy::unused_async))]
 /// initialize the tracing subscriber.
 pub async fn init(format: &Format) {
     let env_filter = EnvFilter::builder()

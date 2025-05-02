@@ -1,4 +1,3 @@
-use crate::init::settings::Settings;
 use axum::routing::get;
 use axum::{Json, Router};
 use serde::Serialize;
@@ -16,10 +15,15 @@ impl Default for HealthResponse {
     }
 }
 
-pub async fn start_management(settings: &Settings) -> Result<(), io::Error> {
+/// provide a management service for healthz endpoints (and metrics in the future)
+///
+/// # Errors
+///
+/// May fail to bind to the given port.
+pub async fn start(port: u16) -> Result<(), io::Error> {
     let app = Router::new().route("/healthz", get(async || Json(HealthResponse::default())));
 
-    let listener = TcpListener::bind(("0.0.0.0", settings.management_port)).await?;
+    let listener = TcpListener::bind(("0.0.0.0", port)).await?;
 
     axum::serve(listener, app).await
 }

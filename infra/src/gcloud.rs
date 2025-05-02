@@ -6,7 +6,7 @@ use hyper_util::client::legacy::Client;
 use hyper_util::client::legacy::connect::HttpConnector;
 use std::convert::Infallible;
 
-/// fetch the Google cloud project-id
+/// fetch the Google Cloud project-id
 /// see <https://cloud.google.com/compute/docs/metadata/predefined-metadata-keys>
 pub async fn fetch_project_id() -> Result<String, Infallible> {
     let uri = "http://metadata.google.internal/computeMetadata/v1/project/project-id"

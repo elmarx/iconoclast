@@ -1172,8 +1172,7 @@ dependencies = [
  "faux",
  "futures",
  "http-body-util",
- "hyper",
- "hyper-util",
+ "infra",
  "listenfd",
  "mockall",
  "mockall_double",
@@ -1187,9 +1186,6 @@ dependencies = [
  "tokio-stream",
  "tower",
  "tracing",
- "tracing-opentelemetry 0.30.0",
- "tracing-stackdriver",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -1357,6 +1353,22 @@ dependencies = [
  "equivalent",
  "hashbrown 0.15.2",
  "serde",
+]
+
+[[package]]
+name = "infra"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "http-body-util",
+ "hyper",
+ "hyper-util",
+ "serde",
+ "tokio",
+ "tracing",
+ "tracing-opentelemetry 0.30.0",
+ "tracing-stackdriver",
+ "tracing-subscriber",
 ]
 
 [[package]]
