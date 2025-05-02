@@ -1,32 +1,37 @@
-use crate::consumer::topic::{ParseError, Payload};
 use crate::init::settings;
 use futures::TryStreamExt;
 use logic::hello::Error as HelloError;
 use logic::hello::Service as HelloService;
-use rdkafka::ClientConfig;
+use model::messages::topics;
+use model::messages::topics::Payload;
 use rdkafka::consumer::{CommitMode, Consumer, StreamConsumer};
 use rdkafka::error::KafkaError;
 use rdkafka::message::BorrowedMessage;
+use rdkafka::{ClientConfig, Message};
 use thiserror::Error;
 use tokio_stream::StreamExt;
-
-pub mod topic;
 
 /// all errors that may happen during strem processing
 #[derive(Error, Debug)]
 pub enum StreamError {
     #[error(transparent)]
     Kafka(#[from] KafkaError),
+
+    // todo: make this "logic errors"
     #[error(transparent)]
     HelloService(#[from] HelloError),
+
     #[error(transparent)]
-    Parse(#[from] ParseError),
+    Parse(#[from] topics::ParseError),
 }
 
 pub struct IconoclastConsumer {
     consumer: StreamConsumer,
     service: HelloService,
 }
+
+// will become a generic type/associated type for a consumer
+type PayloadType = topics::Payload;
 
 impl IconoclastConsumer {
     pub fn new(config: &settings::Kafka, service: HelloService) -> Result<Self, KafkaError> {
@@ -41,15 +46,16 @@ impl IconoclastConsumer {
     }
 
     pub async fn run(&self) -> Result<(), StreamError> {
-        self.consumer.subscribe(topic::TOPICS)?;
+        self.consumer.subscribe(topics::TOPICS)?;
 
         // TODO: start multiple stream-consumers to run in parallel (see https://github.com/fede1024/rust-rdkafka/blob/0b35424129f394e746c2e40519169595d8ac240c/examples/asynchronous_processing.rs#L179)
         self.consumer
             .stream()
             .then(async |m| -> Result<BorrowedMessage, StreamError> {
                 let bm = m?;
-                let payload: Payload = (&bm).try_into()?;
+                let payload = PayloadType::try_from((bm.topic(), bm.payload()))?;
 
+                // TODO: call a handler-trait
                 match payload {
                     Payload::Hello(p) => self.service.handle(p).await?,
                 }
