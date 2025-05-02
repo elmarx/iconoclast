@@ -1,8 +1,6 @@
 use crate::handler;
-#[double]
-use crate::service::hello::Service as HelloService;
 use axum::Router;
-use mockall_double::double;
+use logic::hello::Service as HelloService;
 
 pub mod hello;
 

@@ -10,7 +10,6 @@ mod consumer;
 mod error;
 mod handler;
 mod init;
-mod service;
 
 #[cfg(not(target_env = "msvc"))]
 #[global_allocator]

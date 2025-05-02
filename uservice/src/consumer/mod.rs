@@ -1,9 +1,8 @@
 use crate::consumer::topic::{ParseError, Payload};
 use crate::init::settings;
-use crate::service::hello::Error as HelloError;
-#[mockall_double::double]
-use crate::service::hello::Service as HelloService;
 use futures::TryStreamExt;
+use logic::hello::Error as HelloError;
+use logic::hello::Service as HelloService;
 use rdkafka::ClientConfig;
 use rdkafka::consumer::{CommitMode, Consumer, StreamConsumer};
 use rdkafka::error::KafkaError;
@@ -70,7 +69,7 @@ impl IconoclastConsumer {
 mod test {
     use crate::consumer::IconoclastConsumer;
     use crate::init::settings;
-    use crate::service::hello::MockService;
+    use logic::hello::Service as HelloService;
     use model::messages::hello::{Message as HelloMessage, TOPIC};
     use rdkafka::ClientConfig;
     use rdkafka::producer::{FutureProducer, FutureRecord};
@@ -92,8 +91,8 @@ mod test {
     async fn smoketest() {
         // set up a mock that sends the value (once), as we need to wait for the value
         let (tx, rx) = oneshot::channel::<HelloMessage>();
-        let mut service = MockService::default();
-        service.expect_handle().return_once(|m| {
+        let mut service = HelloService::faux();
+        faux::when!(service.handle).once().then(move |m| {
             tx.send(m).unwrap();
             Ok(())
         });

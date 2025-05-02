@@ -1,0 +1,20 @@
+[package]
+name = "logic"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+faux = ["dep:faux"]
+
+[dependencies]
+faux = { version = "0.1.12", optional = true }
+repository = { path = "../repository" }
+thiserror = "2.0.12"
+tracing = "0.1.41"
+model = { path = "../model" }
+
+[dev-dependencies]
+faux = "0.1.12"
+repository = { path = "../repository", features = ["faux"] }
+tokio = { version = "1.44.2", default-features = false, features = ["rt", "macros"] }
+

@@ -2,10 +2,8 @@ use crate::consumer::IconoclastConsumer;
 use crate::error::AppError;
 use crate::handler;
 use crate::init::settings::Settings;
-#[double]
-use crate::service::hello::Service as HelloService;
 use axum::Router;
-use mockall_double::double;
+use logic::hello::Service as HelloService;
 
 /// building blocks that make up the (micro-) service
 pub struct BuildingBlocks {
