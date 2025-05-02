@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
+default = ["listenfd"]
+listenfd = ["dep:listenfd"]
 gcloud = [
     "dep:tracing-stackdriver",
     "dep:tracing-opentelemetry",
@@ -14,6 +16,7 @@ gcloud = [
 
 [dependencies]
 axum = { version = "0.8.3", default-features = false, features = ["json", "tokio", "http1"] }
+listenfd = { version = "1.0.2", optional = true }
 serde = { version = "1.0.219", features = ["derive"] }
 tokio = { version = "1.44.2", features = ["io-std", "net"] }
 tracing = "0.1.41"

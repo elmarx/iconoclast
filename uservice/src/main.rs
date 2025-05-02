@@ -1,7 +1,7 @@
 use init::settings::Settings;
 
 use crate::init::dependencies::BuildingBlocks;
-use infra::{logging, management};
+use infra::{logging, management, server};
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
@@ -10,7 +10,6 @@ mod consumer;
 mod error;
 mod handler;
 mod init;
-mod server;
 mod service;
 
 #[cfg(not(target_env = "msvc"))]
@@ -28,7 +27,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let BuildingBlocks { app, consumer } = BuildingBlocks::wire(&settings).await?;
 
     let (_main_server, _management_server, _consumer) = tokio::join!(
-        server::start_main(&settings, app),
+        server::start(settings.port, app),
         management::start(settings.management_port),
         consumer.run()
     );
