@@ -1341,12 +1341,17 @@ name = "infra"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "faux",
+ "futures",
  "http-body-util",
  "hyper",
  "hyper-util",
  "listenfd",
+ "rdkafka",
  "serde",
+ "thiserror 2.0.12",
  "tokio",
+ "tokio-stream",
  "tracing",
  "tracing-opentelemetry 0.30.0",
  "tracing-stackdriver",
