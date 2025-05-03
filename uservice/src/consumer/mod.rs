@@ -1,5 +1,5 @@
-use crate::init::settings;
 use futures::TryStreamExt;
+use infra::kafka;
 use logic::hello::Error as HelloError;
 use logic::hello::Service as HelloService;
 use model::messages::topics;
@@ -34,7 +34,7 @@ pub struct IconoclastConsumer {
 type PayloadType = topics::Payload;
 
 impl IconoclastConsumer {
-    pub fn new(config: &settings::Kafka, service: HelloService) -> Result<Self, KafkaError> {
+    pub fn new(config: &kafka::Config, service: HelloService) -> Result<Self, KafkaError> {
         let config = config.clone();
         let mut cfg = ClientConfig::new();
         cfg.extend(config.properties.into_iter().map(|(k, v)| (k, v.into())));
@@ -74,7 +74,7 @@ impl IconoclastConsumer {
 #[cfg(test)]
 mod test {
     use crate::consumer::IconoclastConsumer;
-    use crate::init::settings;
+    use infra::kafka;
     use logic::hello::Service as HelloService;
     use model::messages::hello::{Message as HelloMessage, TOPIC};
     use rdkafka::ClientConfig;
@@ -107,7 +107,7 @@ mod test {
         let cluster = Box::leak(Box::new(rdkafka::mocking::MockCluster::new(3).unwrap()));
         cluster.create_topic(TOPIC, 12, 3).unwrap();
 
-        let config = settings::Kafka {
+        let config = kafka::Config {
             env_properties: vec![
                 ("bootstrap.servers".to_string(), cluster.bootstrap_servers()),
                 ("group.id".to_string(), "smoketest".to_string()),

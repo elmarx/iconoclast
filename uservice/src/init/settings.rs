@@ -2,7 +2,6 @@ use config::{ConfigError, Environment, File, FileFormat};
 use infra::kafka;
 use infra::logging;
 use serde::Deserialize;
-use std::collections::HashMap;
 
 const DEFAULT_CONFIG: &str = include_str!("../../../config.default.toml");
 
@@ -15,15 +14,7 @@ pub struct Settings {
 
     // if no url is given, connection parameters will be read from env: https://docs.rs/sqlx/latest/sqlx/postgres/struct.PgConnectOptions.html#parameters
     pub database_url: Option<String>,
-    pub kafka: Kafka,
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct Kafka {
-    #[serde(skip)]
-    pub env_properties: Vec<(String, String)>,
-    #[serde(flatten, default)]
-    pub properties: HashMap<String, kafka::PropertyValue>,
+    pub kafka: kafka::Config,
 }
 
 impl Settings {

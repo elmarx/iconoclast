@@ -3,6 +3,7 @@
 
 #[cfg(feature = "gcloud")]
 mod gcloud;
+#[cfg(feature = "kafka")]
 pub mod kafka;
 pub mod logging;
 pub mod management;

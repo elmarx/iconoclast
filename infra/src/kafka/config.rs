@@ -1,6 +1,15 @@
 //! helpers to configure kafka conveniently via TOML and environment variables
 
 use serde::Deserialize;
+use std::collections::HashMap;
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct Config {
+    #[serde(skip)]
+    pub env_properties: Vec<(String, String)>,
+    #[serde(flatten, default)]
+    pub properties: HashMap<String, PropertyValue>,
+}
 
 /// collect env-vars into kafka-properties
 /// e.g. turns `KAFKA_BOOTSTRAP_SERVERS` into `bootstrap.servers`

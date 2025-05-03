@@ -22,7 +22,7 @@ tracing = "0.1.41"
 tokio-stream = "0.1.17"
 futures = "0.3.31"
 repository = { path = "../repository" }
-infra = { path = "../infra" }
+infra = { path = "../infra", features = ["kafka"] }
 model = { path = "../model" }
 logic = { path = "../logic" }
 

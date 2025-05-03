@@ -6,6 +6,7 @@ edition = "2024"
 [features]
 default = ["listenfd"]
 listenfd = ["dep:listenfd"]
+kafka = []
 gcloud = [
     "dep:tracing-stackdriver",
     "dep:tracing-opentelemetry",
