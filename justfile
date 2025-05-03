@@ -10,5 +10,6 @@ ci:
 
     cargo clippy --all-targets -- -W clippy::pedantic
 
-    # finally, build the docker image to ensure it works, too
-    docker build .
+docker:
+    tar cf - skeleton iconoclast --transform='s,^skeleton,,' | \
+      docker build -
