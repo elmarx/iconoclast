@@ -18,6 +18,7 @@ struct HelloResponse {
     message: String,
 }
 
+#[utoipa::path(get, path = "/", responses((status = OK)))]
 async fn hello(State(service): State<Arc<HelloService>>) -> impl IntoResponse {
     let message = service.message();
     Json(HelloResponse { message })

@@ -1,6 +1,7 @@
 use axum::Router;
 use tokio::io;
 use tokio::net::TcpListener;
+use utoipa_swagger_ui::SwaggerUi;
 
 /// # Errors
 ///
@@ -19,6 +20,8 @@ pub async fn start(port: u16, app: Router) -> Result<(), io::Error> {
     };
     #[cfg(not(feature = "listenfd"))]
     let listener = TcpListener::bind(("0.0.0.0", port)).await?;
+
+    let app = app.merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", doc));
 
     axum::serve(listener, app).await
 }
