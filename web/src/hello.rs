@@ -2,6 +2,7 @@ use axum::extract::State;
 use axum::response::IntoResponse;
 use axum::{Json, Router};
 use axum_extra::response::InternalServerError;
+use logic::SqlxError;
 use logic::hello::Service as HelloService;
 use std::sync::Arc;
 
@@ -24,20 +25,20 @@ async fn hello(State(service): State<Arc<HelloService>>) -> impl IntoResponse {
 
 async fn sql(
     State(service): State<Arc<HelloService>>,
-) -> Result<String, InternalServerError<repository::SqlxError>> {
+) -> Result<String, InternalServerError<SqlxError>> {
     let number = service.number().await.map_err(InternalServerError)?;
     Ok(format!("{number}"))
 }
 
 #[cfg(test)]
 mod test {
-    use crate::handler::hello::init;
+    use super::init;
     use axum::body::Body;
     use axum::http::{Request, StatusCode};
     use faux::when;
     use http_body_util::BodyExt;
+    use logic::SqlxError;
     use logic::hello::Service as HelloService;
-    use repository::SqlxError;
     use serde_json::Value;
     use tower::ServiceExt;
 

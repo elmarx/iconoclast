@@ -7,7 +7,6 @@ use tikv_jemallocator::Jemalloc;
 use tracing::info;
 
 mod error;
-mod handler;
 mod init;
 mod message_handler;
 

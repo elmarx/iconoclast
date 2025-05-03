@@ -9,7 +9,8 @@ RUN mkdir -p \
     logic/src \
     model/src \
     repository/src \
-    uservice
+    uservice/src \
+    web/src
 
 COPY Cargo.toml Cargo.lock ./
 COPY iconoclast/Cargo.toml iconoclast/
@@ -17,6 +18,7 @@ COPY logic/Cargo.toml logic/
 COPY model/Cargo.toml model/
 COPY repository/Cargo.toml repository/
 COPY uservice/Cargo.toml uservice/
+COPY web/Cargo.toml web/
 
 # compile all dependencies with a dummy for improved caching
 RUN mkdir -p uservice/src/bin && \
@@ -24,6 +26,7 @@ RUN mkdir -p uservice/src/bin && \
   touch logic/src/lib.rs && \
   touch model/src/lib.rs && \
   touch repository/src/lib.rs && \
+  touch web/src/lib.rs && \
   echo "fn main() { println!(\"Dummy\"); }" > uservice/src/bin/dummy.rs && \
   cargo build --release && \
   rm -rf uservice/src
@@ -35,9 +38,10 @@ COPY logic logic
 COPY model model
 COPY repository repository
 COPY uservice uservice
+COPY web web
 
 # update the timestamps so cargo picks up the actual code
-RUN touch iconoclast/src/lib.rs logic/src/lib.rs model/src/lib.rs repository/src/lib.rs
+RUN touch iconoclast/src/lib.rs logic/src/lib.rs model/src/lib.rs repository/src/lib.rs web/src/lib.rs
 
 RUN cargo install --locked --path uservice --root /usr/local
 

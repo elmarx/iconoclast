@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["iconoclast", "logic", "model", "repository", "uservice"]
+members = ["iconoclast", "logic", "model", "repository", "uservice", "web"]
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3

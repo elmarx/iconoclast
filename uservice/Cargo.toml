@@ -11,8 +11,6 @@ gcloud = [
 ]
 
 [dependencies]
-axum = { version = "0.8.3", features = ["macros"] }
-axum-extra = { version = "0.10.1", features = ["error-response"] }
 config = { version = "0.15.11", features = ["toml"] }
 serde = { version = "1.0.219", features = ["derive"] }
 thiserror = "2.0.12"
@@ -22,15 +20,8 @@ repository = { path = "../repository" }
 iconoclast = { path = "../iconoclast", features = ["kafka"] }
 model = { path = "../model" }
 logic = { path = "../logic" }
+web = { path = "../web" }
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 tikv-jemallocator = "0.6"
-
-[dev-dependencies]
-tower = { version = "0.5.2", features = ["util"] }
-serde_json = "1.0.140"
-http-body-util = "0.1.3"
-faux = "0.1.12"
-repository = { path = "../repository", features = ["faux"] }
-logic = { path = "../logic", features = ["faux"] }
 

@@ -1,11 +1,10 @@
 use crate::error::AppError;
-use crate::handler;
 use crate::init::settings::Settings;
 use crate::message_handler::MessageHandler;
-use axum::Router;
 use iconoclast::kafka;
 use logic::hello::Service as HelloService;
 use model::messages::topics::{ParseError, Payload, TOPICS};
+use web::Router;
 
 /// building blocks that make up the (micro-) service
 pub struct BuildingBlocks {
@@ -19,7 +18,7 @@ impl BuildingBlocks {
         let repo = repository::init(settings.database_url.as_deref()).await?;
         let hello_service = HelloService::new(repo);
 
-        let app = handler::init(hello_service.clone());
+        let app = web::init(hello_service.clone());
         let message_handler = MessageHandler::new(hello_service);
         let consumer = kafka::Consumer::new(&settings.kafka, TOPICS, message_handler)?;
 

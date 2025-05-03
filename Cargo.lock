@@ -3394,22 +3394,17 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 name = "uservice"
 version = "0.1.0"
 dependencies = [
- "axum",
- "axum-extra",
  "config",
- "faux",
- "http-body-util",
  "iconoclast",
  "logic",
  "model",
  "repository",
  "serde",
- "serde_json",
  "thiserror 2.0.12",
  "tikv-jemallocator",
  "tokio",
- "tower",
  "tracing",
+ "web",
 ]
 
 [[package]]
@@ -3537,6 +3532,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d"
 dependencies = [
  "unicode-ident",
+]
+
+[[package]]
+name = "web"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-extra",
+ "faux",
+ "http-body-util",
+ "logic",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
 ]
 
 [[package]]
