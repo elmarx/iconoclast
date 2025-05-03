@@ -9,3 +9,6 @@ ci:
     cargo nextest run --all-targets --all-features
 
     cargo clippy --all-targets -- -W clippy::pedantic
+
+    # finally, build the docker image to ensure it works, too
+    docker build .
