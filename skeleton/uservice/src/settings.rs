@@ -1,16 +1,13 @@
 use config::{ConfigError, Environment, File, FileFormat};
+use iconoclast::config::IconoclastConfig;
 use iconoclast::kafka;
-use iconoclast::logging;
 use serde::Deserialize;
 
 const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
-    pub port: u16,
-    pub management_port: u16,
-    /// format to log.
-    pub logging: logging::Format,
+    pub iconoclast: IconoclastConfig,
 
     // if no url is given, connection parameters will be read from env: https://docs.rs/sqlx/latest/sqlx/postgres/struct.PgConnectOptions.html#parameters
     pub database_url: Option<String>,

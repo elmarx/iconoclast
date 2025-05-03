@@ -1,6 +1,7 @@
 //! (technical) infrastructure
 //! this crate should be re-usable, i.e. could even be referenced by projects directly
 
+pub mod config;
 #[cfg(feature = "gcloud")]
 mod gcloud;
 #[cfg(feature = "kafka")]
