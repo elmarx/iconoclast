@@ -3,7 +3,7 @@ use iconoclast::kafka;
 use iconoclast::logging;
 use serde::Deserialize;
 
-const DEFAULT_CONFIG: &str = include_str!("../../../config.default.toml");
+const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {

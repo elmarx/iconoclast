@@ -1,14 +1,15 @@
-use init::settings::Settings;
+use settings::Settings;
 
-use crate::init::dependencies::BuildingBlocks;
+use dependencies::BuildingBlocks;
 use iconoclast::{logging, management, server};
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
 
+pub mod dependencies;
 mod error;
-mod init;
 mod message_handler;
+pub mod settings;
 
 #[cfg(not(target_env = "msvc"))]
 #[global_allocator]
