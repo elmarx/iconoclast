@@ -1,6 +1,6 @@
 use config::{ConfigError, Environment, File, FileFormat};
-use infra::kafka;
-use infra::logging;
+use iconoclast::kafka;
+use iconoclast::logging;
 use serde::Deserialize;
 
 const DEFAULT_CONFIG: &str = include_str!("../../../config.default.toml");

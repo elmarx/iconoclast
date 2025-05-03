@@ -3,7 +3,7 @@ use crate::handler;
 use crate::init::settings::Settings;
 use crate::message_handler::MessageHandler;
 use axum::Router;
-use infra::kafka;
+use iconoclast::kafka;
 use logic::hello::Service as HelloService;
 use model::messages::topics::{ParseError, Payload, TOPICS};
 

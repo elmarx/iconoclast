@@ -1,13 +1,13 @@
 [package]
-name = "iconoclast"
+name = "uservice"
 version = "0.1.0"
 edition = "2024"
 
 [features]
 default = ["listenfd"]
-listenfd = ["infra/listenfd"]
+listenfd = ["iconoclast/listenfd"]
 gcloud = [
-    "infra/gcloud",
+    "iconoclast/gcloud",
 ]
 
 [dependencies]
@@ -19,7 +19,7 @@ thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing = "0.1.41"
 repository = { path = "../repository" }
-infra = { path = "../infra", features = ["kafka"] }
+iconoclast = { path = "../iconoclast", features = ["kafka"] }
 model = { path = "../model" }
 logic = { path = "../logic" }
 

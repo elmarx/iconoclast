@@ -1149,21 +1149,21 @@ name = "iconoclast"
 version = "0.1.0"
 dependencies = [
  "axum",
- "axum-extra",
- "config",
  "faux",
+ "futures",
  "http-body-util",
- "infra",
- "logic",
- "model",
- "repository",
+ "hyper",
+ "hyper-util",
+ "listenfd",
+ "rdkafka",
  "serde",
- "serde_json",
  "thiserror 2.0.12",
- "tikv-jemallocator",
  "tokio",
- "tower",
+ "tokio-stream",
  "tracing",
+ "tracing-opentelemetry 0.30.0",
+ "tracing-stackdriver",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -1331,28 +1331,6 @@ dependencies = [
  "equivalent",
  "hashbrown 0.15.2",
  "serde",
-]
-
-[[package]]
-name = "infra"
-version = "0.1.0"
-dependencies = [
- "axum",
- "faux",
- "futures",
- "http-body-util",
- "hyper",
- "hyper-util",
- "listenfd",
- "rdkafka",
- "serde",
- "thiserror 2.0.12",
- "tokio",
- "tokio-stream",
- "tracing",
- "tracing-opentelemetry 0.30.0",
- "tracing-stackdriver",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -3411,6 +3389,28 @@ name = "urlencoding"
 version = "2.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
+
+[[package]]
+name = "uservice"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "axum-extra",
+ "config",
+ "faux",
+ "http-body-util",
+ "iconoclast",
+ "logic",
+ "model",
+ "repository",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.12",
+ "tikv-jemallocator",
+ "tokio",
+ "tower",
+ "tracing",
+]
 
 [[package]]
 name = "utf16_iter"

@@ -1,4 +1,4 @@
-use infra::kafka;
+use iconoclast::kafka;
 use model::messages::topics::Payload;
 
 type LogicalError = logic::hello::Error;
