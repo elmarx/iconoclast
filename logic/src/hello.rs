@@ -36,7 +36,7 @@ impl Service {
     ///
     /// Might also go into another service, just an example.
     ///
-    /// Will fail with it's own error-type
+    /// Will fail with its own error-type
     pub async fn handle(&self, m: hello::Message) -> Result<(), Error> {
         match m {
             hello::Message::Name(name) => info!("Hello {name}!"),

@@ -14,13 +14,10 @@ gcloud = [
 axum = { version = "0.8.3", features = ["macros"] }
 axum-extra = { version = "0.10.1", features = ["error-response"] }
 config = { version = "0.15.11", features = ["toml"] }
-rdkafka = { version = "0.37.0", features = ["sasl", "ssl", "zstd"] }
 serde = { version = "1.0.219", features = ["derive"] }
 thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing = "0.1.41"
-tokio-stream = "0.1.17"
-futures = "0.3.31"
 repository = { path = "../repository" }
 infra = { path = "../infra", features = ["kafka"] }
 model = { path = "../model" }

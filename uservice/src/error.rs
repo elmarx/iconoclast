@@ -1,5 +1,5 @@
 use config::ConfigError;
-use rdkafka::error::KafkaError;
+use infra::kafka::KafkaError;
 
 /// Container for all errors in different layers/parts of the service
 #[derive(Debug, thiserror::Error)]

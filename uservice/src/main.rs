@@ -6,10 +6,10 @@ use infra::{logging, management, server};
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
 
-mod consumer;
 mod error;
 mod handler;
 mod init;
+mod message_handler;
 
 #[cfg(not(target_env = "msvc"))]
 #[global_allocator]
@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (_main_server, _management_server, _consumer) = tokio::join!(
         server::start(settings.port, app),
         management::start(settings.management_port),
-        consumer.run()
+        consumer.start()
     );
 
     Ok(())
