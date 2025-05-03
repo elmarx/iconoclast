@@ -24,10 +24,25 @@ jobs:
 
       - name: compile with all features
         run: cargo check --all-targets --all-features
-        
+
       - name: Run Tests
         run: cargo nextest run --all-features --all-targets
 
       - uses: crusty-pie/clippy@v1
         with:
           args: --all-features --all-targets
+
+      - name: prepare building the skeleton image
+        run: |
+          cp -r iconoclast skeleton
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: skeleton
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
