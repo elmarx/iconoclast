@@ -6,7 +6,8 @@ edition = "2024"
 [features]
 default = ["listenfd"]
 listenfd = ["dep:listenfd"]
-livereload = ["dep:tower-livereload"]
+livereload = ["dep:tower-livereload", "dep:notify"]
+
 kafka = [
     "dep:rdkafka",
     "dep:thiserror",
@@ -38,6 +39,7 @@ thiserror = { version = "2.0.12", optional = true }
 futures = { version = "0.3.31", optional = true }
 tokio-stream = { version = "0.1.17", optional = true }
 tower-livereload = { version = "0.9.6", optional = true }
+notify = { version = "8.0.0", optional = true }
 
 [dev-dependencies]
 faux = "0.1.12"

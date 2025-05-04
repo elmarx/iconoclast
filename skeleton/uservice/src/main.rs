@@ -27,7 +27,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let BuildingBlocks { app, consumer } = BuildingBlocks::wire(&settings).await?;
 
     let (_main_server, _management_server, _consumer) = tokio::try_join!(
-        server::start(settings.iconoclast.port, app).map_err(iconoclast::StartupError::from),
+        server::start(settings.iconoclast.port, app, &[]).map_err(iconoclast::StartupError::from),
         management::start(settings.iconoclast.management_port)
             .map_err(iconoclast::StartupError::from),
         consumer.start().map_err(iconoclast::StartupError::from)
