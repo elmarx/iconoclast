@@ -20,5 +20,8 @@ pub async fn start(port: u16, app: Router) -> Result<(), io::Error> {
     #[cfg(not(feature = "listenfd"))]
     let listener = TcpListener::bind(("0.0.0.0", port)).await?;
 
+    #[cfg(feature = "livereload")]
+    let app = app.layer(tower_livereload::LiveReloadLayer::new());
+
     axum::serve(listener, app).await
 }
