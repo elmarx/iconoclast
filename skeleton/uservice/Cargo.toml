@@ -21,6 +21,7 @@ iconoclast = { path = "../../iconoclast", features = ["kafka"] }
 model = { path = "../model" }
 logic = { path = "../logic" }
 web = { path = "../web" }
+futures = "0.3.31"
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 tikv-jemallocator = "0.6"
