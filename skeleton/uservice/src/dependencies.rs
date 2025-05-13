@@ -1,3 +1,5 @@
+//! initialization of the object graph/dependencies
+
 use crate::error::AppError;
 use crate::message_handler::MessageHandler;
 use crate::settings::Settings;

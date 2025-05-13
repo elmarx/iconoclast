@@ -1,4 +1,6 @@
-//! common understanding/model used between layers
-//! i.e. kafka-messages and (domain)-models
+//! The actual domain model.
+//!
+//! Common understanding/model used between layers
+//! i.e., kafka-messages and (domain)-models
 
 pub mod messages;

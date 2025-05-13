@@ -5,12 +5,16 @@ use serde::Deserialize;
 
 const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 
+/// all service settings
 #[derive(Debug, Deserialize)]
 pub struct Settings {
+    /// generic configuration for all iconoclast-like services
     pub iconoclast: IconoclastConfig,
 
     // if no url is given, connection parameters will be read from env: https://docs.rs/sqlx/latest/sqlx/postgres/struct.PgConnectOptions.html#parameters
     pub database_url: Option<String>,
+
+    /// kafka configuration
     pub kafka: kafka::Config,
 }
 

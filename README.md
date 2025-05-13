@@ -2,61 +2,47 @@
 
 <img src="./doc/iconoclast.png" alt="Iconoclast" style="width: 300px; margin-left: 10px;" align="right" />
 
-Skeleton for a rust business application
+Project iconoclast's goal is to provide the best support to build a Rust "business"-service.
 
-## Tools to install
+It started as a project-template, but now also includes a crate for reusable code.
 
-- [nextest](https://nexte.st/)
-- [bacon](https://dystroy.org/bacon/)
-- [systemfd](https://github.com/mitsuhiko/systemfd)
-- [just](https://just.systems/)
+## Features/Design
 
-## Feature Flags
+- layered architecture
+    - http
+    - logic
+    - repository (for persistence)
+- testable (with mocks/fakes)
+- manual dependency-injection
+- configuration via file and environment-variables
+- "structured" (json) [logging/tracing](https://tracing.rs)
+- [axum](https://github.com/tokio-rs/axum) for http
+- [HTML templating with askama](https://askama.readthedocs.io) (a jinja-like templating) with
+  live-reload
+- separate "management" service for health-check etc.
+- kafka
+- persistence via [sqlx](https://github.com/launchbadge/sqlx) and PostgresQL
 
-Some functions are behind feature flags. Of course, code guarded by features may be deleted
-completely if not needed.
+## Getting started
 
-- [`listenfd`](https://github.com/mitsuhiko/listenfd?tab=readme-ov-file#listenfd) supports using
-  externally managed file descriptors.
+- copy over the "skeleton" folder
+- update the path/location of the "iconoclast"-crate (in `skeleton/uservice`)
+- TODO: provide an `skeleton.zip` artifact to download and extract as a starting point
 
-  This is useful during development (auto-reload) or if using systemd-socket activation.
+## Usage
 
-## Development
+See [the skeleton's README](./skeleton/README.md) for actual usage.
 
-- `bacon run` or `systemfd --no-pid -s http::8080 -- bacon run`
-- `bacon test` or `bacon nextest`
-- `just ci` to execute all relevant tests, checks etc. for the different feature-sets
+## The name
 
-# Philosophy and design
+*iconoclast* (aɪˈkɒnəˌklæst) —
 
-- [Functional Core, Imperative shell](https://kennethlange.com/functional-core-imperative-shell/)
-- (axum-) handlers accept requests, validate input and call the relevant logic (functions or services)
-    - handlers are broken into modules that each get passed their dependencies and return a router (each with their own
-      state)
-- manual dependency-injection, wiring of the dependencies in module `init::dependencies`
-- configuration in module `init::settings`
-- services for logic where internal state is necessary (i.e.: access to repositories)
-- all other logic should go to pure functions
-- `main()` "starts" all the building blocks
+> a person who attacks established or traditional concepts, principles, laws, etc
 
-# Testing
+Iconoclast is here to
 
-For testing, *iconoclast* uses [mockall](https://docs.rs/mockall/0.13.1/mockall/#mocking-structs) to mock structs.
-So in production-code, imports need to be marked with `#[double]`.
+- question the dominance of Java/Spring
+- show Rust is also an application programming language
 
-With mocked dependencies, it's possible to instantiate a router (without creating a service) as shown
-in [axum examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/src/main.rs)
-
-## Testcontainers
-
-Also, for DB-tests, iconoclast uses [testcontainers](https://docs.rs/testcontainers/0.23.3/testcontainers/). A single
-instance will spin up for all tests.
-
-# Error Handling
-
-- use [`thiserror`](https://docs.rs/thiserror/latest/thiserror/) to wrap errors for each layer
-- *panicking* during startup/on top level is ok
-- For axum: implement error handler (
-  TODO: [implement iconoclast example](https://github.com/tokio-rs/axum/blob/main/examples/error-handling/src/main.rs#L158-L186))
-- or easy 500 errors
-  with [InternalServerError](https://docs.rs/axum-extra/latest/axum_extra/response/struct.InternalServerError.html)
+Also, it's the name of
+an [album](https://en.wikipedia.org/wiki/Iconoclast_(Part_1:_The_Final_Resistance)).

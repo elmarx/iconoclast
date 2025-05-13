@@ -12,6 +12,8 @@ mod error;
 mod message_handler;
 pub mod settings;
 
+// Jemalloc reduces heap-fragmentation and yields a way better memory-profile for the application
+// in almost all cases Jemalloc is the better choice.
 #[cfg(not(target_env = "msvc"))]
 #[global_allocator]
 static GLOBAL: Jemalloc = Jemalloc;

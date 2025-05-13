@@ -1,4 +1,4 @@
-//! Repository layer for the application.
+//! Persistence-layer and encapsulation of DB-access.
 //!
 //! Knows SQL and technical details.
 
