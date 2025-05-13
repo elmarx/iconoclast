@@ -28,6 +28,15 @@ impl DummyRepository {
 
         Ok(row.0)
     }
+
+    pub async fn insert(&self, value: &str) -> Result<u64, sqlx::Error> {
+        let rows_affected = sqlx::query!(r#"INSERT INTO greetings (value) VALUES ($1)"#, value)
+            .execute(&self.pool)
+            .await?
+            .rows_affected();
+
+        Ok(rows_affected)
+    }
 }
 
 #[cfg(test)]

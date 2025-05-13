@@ -1,6 +1,6 @@
 use model::messages::hello;
 use repository::dummy::DummyRepository;
-use tracing::{info, warn};
+use tracing::warn;
 
 #[cfg_attr(any(test, feature = "faux"), faux::create)]
 #[derive(Clone)]
@@ -39,7 +39,9 @@ impl Service {
     /// Will fail with its own error-type
     pub async fn handle(&self, m: hello::Message) -> Result<(), Error> {
         match m {
-            hello::Message::Name(name) => info!("Hello {name}!"),
+            hello::Message::Name(name) => {
+                self.repo.insert(&name).await.unwrap();
+            }
             hello::Message::Tombstone => warn!("someone is dead"),
         }
 
