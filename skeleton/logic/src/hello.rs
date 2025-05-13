@@ -1,3 +1,5 @@
+//! a module showcasing a service with persistence and tests
+
 use model::messages::hello;
 use repository::dummy::DummyRepository;
 use tracing::warn;
@@ -11,6 +13,7 @@ pub struct Service {
 #[derive(thiserror::Error, Debug)]
 pub enum Error {}
 
+/// the HelloService
 #[cfg_attr(any(test, feature = "faux"), faux::methods)]
 impl Service {
     #[must_use]
@@ -18,12 +21,13 @@ impl Service {
         Self { repo }
     }
 
+    /// return an example message
     #[must_use]
     pub fn message(&self) -> String {
         "Hello, World from Service!".to_string()
     }
 
-    /// access the repository.
+    /// Showcase accessing a repository
     ///
     /// # Errors
     ///
