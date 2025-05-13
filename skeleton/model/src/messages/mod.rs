@@ -1,3 +1,5 @@
+//! Messages used in relevant kafka-topics
+
 pub mod hello;
 pub mod topics;
 
