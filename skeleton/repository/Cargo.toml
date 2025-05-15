@@ -10,7 +10,7 @@ thiserror = "2.0.12"
 faux = { version = "0.1.12", optional = true }
 
 [dev-dependencies]
-testcontainers = "0.23.3"
+testcontainers = "0.24.0"
 testcontainers-modules = { version = "0.11.6", features = ["postgres"] }
 tokio = { version = "1.44.2", default-features = false, features = ["rt", "macros"] }
 faux = "0.1.12"
