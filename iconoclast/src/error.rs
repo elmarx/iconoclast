@@ -1,5 +1,3 @@
-use crate::kafka;
-
 #[cfg(feature = "kafka")]
 #[derive(Debug, thiserror::Error)]
 pub enum Startup<PE: std::error::Error, LE: std::error::Error> {
@@ -7,12 +5,12 @@ pub enum Startup<PE: std::error::Error, LE: std::error::Error> {
     Io(#[from] tokio::io::Error),
 
     #[error(transparent)]
-    Kafka(#[from] kafka::StreamError<PE, LE>),
+    Kafka(#[from] crate::kafka::StreamError<PE, LE>),
 }
 
 #[cfg(not(feature = "kafka"))]
 #[derive(Debug, thiserror::Error)]
-pub enum Startup<PE: std::error::Error, LE: std::error::Error> {
+pub enum Startup {
     #[error(transparent)]
     Io(#[from] tokio::io::Error),
 }
