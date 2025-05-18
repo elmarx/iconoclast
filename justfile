@@ -11,3 +11,7 @@ ci:
 
     cargo clippy -p iconoclast --all-targets -- -D clippy::pedantic
     cargo clippy -p uservice --all-targets -- -W clippy::pedantic
+
+# build a re-distributable service-skeleton
+dist_skeleton:
+    tar czf service-skeleton.tar.gz -C examples --exclude=.idea --exclude=target --transform='s,^skeleton,iconoclast-skeleton,' skeleton
