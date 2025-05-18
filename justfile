@@ -20,3 +20,7 @@ _tar_macos:
 
 _tar_linux:
     @tar --exclude=target --transform='s,^skeleton,,' -cf - skeleton iconoclast
+
+# build a re-distributable service-skeleton
+dist_skeleton:
+    tar czf service-skeleton.tar.gz -C examples --exclude=.idea --exclude=target --transform='s,^skeleton,iconoclast-skeleton,' skeleton

@@ -2,3 +2,5 @@
 /target
 
 Cargo.lock
+
+service-skeleton.tar.gz
