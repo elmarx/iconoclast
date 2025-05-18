@@ -1,0 +1,11 @@
+database_url = "postgres://iconoclast:iconoclast@localhost/iconoclast"
+
+[iconoclast]
+port = 8080
+# port for health-checks, metrics, etc.
+management_port = 9000
+logging = "human"
+
+[kafka]
+# rdkafka-properties, see https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md#global-configuration-properties
+"bootstrap.servers" = "localhost:9092"

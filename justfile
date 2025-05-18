@@ -11,12 +11,3 @@ ci:
 
     cargo clippy -p iconoclast --all-targets -- -D clippy::pedantic
     cargo clippy -p uservice --all-targets -- -W clippy::pedantic
-
-docker:
-    just _tar_{{ os() }} | docker build -
-
-_tar_macos:
-    @tar -cf - -s ',^skeleton,,' --exclude target skeleton iconoclast
-
-_tar_linux:
-    @tar --exclude=target --transform='s,^skeleton,,' -cf - skeleton iconoclast
