@@ -3,7 +3,7 @@ on: [ push, pull_request ]
 
 jobs:
   test:
-    name: test
+    name: test iconoclast
     runs-on: ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
@@ -25,7 +25,7 @@ jobs:
       - name: compile iconoclast with all features
         run: cargo check -p iconoclast --all-targets --all-features
 
-      - name: compile skeleton
+      - name: compile demo
         run: cargo check -p uservice --all-targets --no-default-features
 
       - name: Run Tests
@@ -35,9 +35,37 @@ jobs:
         with:
           args: --all-features --all-targets
 
-      - name: prepare building the skeleton image
+  skeleton:
+    name: test skeleton
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@cargo-nextest
+
+      - name: install required native libs
+        run: sudo apt-get install libsasl2-dev
+
+      - run: cargo fmt --check
+        working-directory: examples/skeleton
+
+      - name: use iconoclast from source
         run: |
-          cp -r iconoclast skeleton
+          cat <<EOF >> examples/skeleton/Cargo.toml
+          [patch.crates-io]
+          iconoclast = { path = "../../iconoclast" }
+          EOF
+
+      - name: compile skeleton
+        run: cargo check --all-targets
+        working-directory: examples/skeleton
+
+      - name: restore manifest
+        run: git restore examples/skeleton/Cargo.toml
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -46,6 +74,6 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: skeleton
+          context: examples/skeleton
           cache-from: type=gha
           cache-to: type=gha,mode=max

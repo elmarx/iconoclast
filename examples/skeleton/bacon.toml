@@ -1,0 +1,15 @@
+# generated with `bacon --init`
+
+[jobs.run]
+command = [
+    "cargo", "run",
+    # put launch parameters for your program behind a `--` separator
+]
+need_stdout = true
+allow_warnings = true
+background = false
+on_change_strategy = "kill_then_restart"
+default_watch = true
+watch = [
+    "./web/templates",
+]

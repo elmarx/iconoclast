@@ -4,24 +4,22 @@ use crate::error::AppError;
 use crate::message_handler::MessageHandler;
 use crate::settings::Settings;
 use iconoclast::kafka;
-use logic::hello::Service as HelloService;
-use model::messages::topics::{ParseError, Payload, TOPICS};
+use model::topics::{ParseError, Payload, TOPICS};
 use web::Router;
 
 /// building blocks that make up the (micro-) service
 pub struct BuildingBlocks {
     pub app: Router,
-    pub consumer: kafka::Consumer<MessageHandler, Payload, ParseError, logic::hello::Error>,
+    pub consumer: kafka::Consumer<MessageHandler, Payload, ParseError, logic::Error>,
 }
 
 impl BuildingBlocks {
     /// initialize and wire up all the dependencies
     pub async fn wire(settings: &Settings) -> Result<Self, AppError> {
-        let repo = repository::init(settings.database_url.as_deref()).await?;
-        let hello_service = HelloService::new(repo);
+        let _repo = repository::init(settings.database_url.as_deref()).await?;
 
-        let app = web::init(hello_service.clone());
-        let message_handler = MessageHandler::new(hello_service);
+        let app = web::init();
+        let message_handler = MessageHandler::new();
         let consumer = kafka::Consumer::new(&settings.kafka, TOPICS, message_handler)?;
 
         Ok(Self { app, consumer })
