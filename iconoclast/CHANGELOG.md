@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.1.0...iconoclast-v0.1.1) - 2025-05-18
+
+### Other
+
+- retrofit CHANGELOG for 0.1.0
+
 ## [0.1.0](https://github.com/elmarx/iconoclast/releases/tag/iconoclast-v0.1.0) - 2025-05-18
 
 ### Added
