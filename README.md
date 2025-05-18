@@ -25,9 +25,7 @@ It started as a project-template, but now also includes a crate for reusable cod
 
 ## Getting started
 
-- copy over the "skeleton" folder
-- update the path/location of the "iconoclast"-crate (in `skeleton/uservice`)
-- TODO: provide an `skeleton.zip` artifact to download and extract as a starting point
+- copy over the `examples/skeleton` folder
 
 ## Usage
 
