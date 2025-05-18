@@ -1,3 +1,6 @@
 [workspace]
 resolver = "2"
 members = ["iconoclast", "skeleton/uservice"]
+
+[patch.crates-io]
+iconoclast = { path = "iconoclast" }
