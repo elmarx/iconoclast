@@ -4,12 +4,11 @@ A Rust-based service.
 
 ## Tools to install
 
-- [docker-compose](https://docs.docker.com/compose/install/) (and docker in general) to start local
-  development infrastructure
+- [docker-compose](https://docs.docker.com/compose/install/) (and docker in general) to start local development infrastructure
 - [sqlx-cli](https://github.com/launchbadge/sqlx/tree/main/sqlx-cli#sqlx-cli) to work with sql
+- [direnv](https://direnv.net/) to setup environment-variables for development
 - [nextest](https://nexte.st/) (optional) as an improved testrunner (`cargo nextest run`)
-- [bacon](https://dystroy.org/bacon/) (optional) watches code for changes and checks/tests code
-  continuously
+- [bacon](https://dystroy.org/bacon/) (optional) watches code for changes and checks/tests code continuously
 - [just](https://just.systems/) (optional) task-runner for common development-tasks (defined
   in [justfile](./justfile))
 - [systemfd](https://github.com/mitsuhiko/systemfd) (optional) for improved live-reload experience
@@ -17,6 +16,7 @@ A Rust-based service.
 ## Development
 
 - start development-service: `docker-compose up -d`
+- make sure [*direnv* reads `.envrc`](https://direnv.net/)
 - [sqlx migrate run](https://github.com/launchbadge/sqlx/tree/main/sqlx-cli#create-and-run-migrations)
 - `bacon long-run` or `systemfd --no-pid -s http::8080 -- bacon long-run`
 - `bacon test` or `bacon nextest`
@@ -38,8 +38,8 @@ should be needed at all.
 
 ## repository
 
-The *repository* crate "knows" SQL and encapsulates DB-access for other crates to provide
-persistence to allow persisting domain models.
+The
+*repository* crate "knows" SQL and encapsulates DB-access for other crates to provide persistence to allow persisting domain models.
 
 Tests in this crate mainly test SQL queries, i.e., target the actual DB directly.
 
@@ -49,13 +49,11 @@ Imagine that this layer will be replaced with something else if you decide to us
 
 *Logic* implements the business-logic. This of course includes access to persistence.
 
-Put as much logic into pure functions as possible, only logic that requires persistence (i.e.:
-repository) should go into services (which reference repositories).
+Put as much logic into pure functions as possible, only logic that requires persistence (i.e.: repository) should go into services (which reference repositories).
 
 This layer is probably heavily unit-tested (using repository-mocks where necessary).
 
-This layer shouldn't require changes if an sql-based repository is replaced with some NoSQL-based (
-in theory).
+This layer shouldn't require changes if an sql-based repository is replaced with some NoSQL-based (in theory).
 
 ## web
 
@@ -64,8 +62,7 @@ request to the logic-layer and — depending on the kind of application — rend
 view/UI.
 
 If the application is very "REST"-like, or rather CRUD-like (and most of the services just forward
-requests to the
-repository-layer), it might be okay to access repositories directly from web-handlers.
+requests to thec repository-layer), it might be okay to access repositories directly from web-handlers.
 
 The web-layer itself could/should be split into submodules per path.
 
@@ -97,29 +94,23 @@ The `Dockerfile` makes heavy use of caching: compile dependencies first (enablin
 
 ## Fakes/Mocking
 
-For testing, this service uses [faux](https://docs.rs/faux/latest/faux/) to mock the structs of the
-*repository* and *service*-layer, so *service* and *web* can be unit-tested.
+For testing, this service uses [faux](https://docs.rs/faux/latest/faux/) to mock the structs of the *repository* and
+*service*-layer, so *service* and *web* can be unit-tested.
 
 Faux adds compile-time "fakes" for structs in test-configuration, it's purely a dev-dependency.
 
 All *structs* that should be mocked need to be annotated with `#[cfg_attr(test, faux::create)]`, all *impl*-blocks with
 `#[cfg_attr(test, faux::create)]`.
 
-Using cargo's features, [faux\' mocks can be exported](https://nrxus.github.io/faux/guide/exporting-mocks.html) and
-re-used in other crates and still be test-only.
+Using cargo's features, [faux\' mocks can be exported](https://nrxus.github.io/faux/guide/exporting-mocks.html) and re-used in other crates and still be test-only.
 
 ## Web
 
-Axum provides tooling
-and [examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/src/main.rs) how to test
-handlers.
+Axum provides tooling and [examples](https://github.com/tokio-rs/axum/blob/main/examples/testing/src/main.rs) how to test handlers.
 
 ## Repository
 
-For DB-tests the repository-layer
-uses [testcontainers](https://docs.rs/testcontainers/latest/testcontainers/index.html). A single
-instance will
-spin up for all tests.
+For DB-tests the repository-layer uses [testcontainers](https://docs.rs/testcontainers/latest/testcontainers/index.html). A single instance will spin up for all tests.
 
 # Error Handling
 
@@ -128,8 +119,6 @@ spin up for all tests.
 
 ## Web
 
-Generic error-handling is possible with
-with [InternalServerError](https://docs.rs/axum-extra/latest/axum_extra/response/struct.InternalServerError.html).
+Generic error-handling is possible with [InternalServerError](https://docs.rs/axum-extra/latest/axum_extra/response/struct.InternalServerError.html).
 
-Otherwise,
-implement [IntoResponse](https://github.com/tokio-rs/axum/blob/main/examples/error-handling/src/main.rs#L158-L186)
+Otherwise, implement [IntoResponse](https://github.com/tokio-rs/axum/blob/main/examples/error-handling/src/main.rs#L158-L186)
