@@ -1,6 +1,6 @@
-use sqlx::Pool;
 use sqlx::postgres::PgPoolOptions;
-use testcontainers::{ContainerAsync, ImageExt, runners::AsyncRunner};
+use sqlx::Pool;
+use testcontainers::{runners::AsyncRunner, ContainerAsync, ImageExt};
 use testcontainers_modules::postgres;
 use tokio::sync::OnceCell;
 
@@ -37,7 +37,11 @@ pub async fn test_pool() -> &'static Pool<sqlx::Postgres> {
             let host_port = container.get_host_port_ipv4(5432).await.unwrap();
 
             let url = format!("postgres://{USER}:{PASSWORD}@{host_ip}:{host_port}/{DB_NAME}");
-            PgPoolOptions::new().connect(&url).await.unwrap()
+            let pool = PgPoolOptions::new().connect(&url).await.unwrap();
+
+            sqlx::migrate!("../migrations").run(&pool).await.unwrap();
+
+            pool
         })
         .await
 }

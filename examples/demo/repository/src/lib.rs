@@ -2,20 +2,20 @@
 //!
 //! Knows SQL and technical details.
 
-use crate::dummy::DummyRepository;
+use crate::todo::TodoRepository;
 pub use error::Error;
 use sqlx::PgPool;
 use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
 
 pub use sqlx::Error as SqlxError;
 
-pub mod dummy;
 pub mod error;
 #[cfg(test)]
 pub mod test;
+pub mod todo;
 
 pub struct Repositories {
-    pub dummy: DummyRepository,
+    pub dummy: TodoRepository,
 }
 
 /// Initializes the database connection and returns the repositories.
@@ -34,7 +34,7 @@ pub async fn init(url: Option<&str>) -> Result<Repositories, Error> {
         PgPool::connect_with(PgConnectOptions::new()).await?
     };
 
-    let dummy = DummyRepository::new(&pool);
+    let dummy = TodoRepository::new(&pool);
 
     Ok(Repositories { dummy })
 }

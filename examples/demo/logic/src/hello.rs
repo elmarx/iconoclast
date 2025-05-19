@@ -1,13 +1,13 @@
 //! a module showcasing a service with persistence and tests
 
 use model::messages::hello;
-use repository::dummy::DummyRepository;
+use repository::todo::TodoRepository;
 use tracing::warn;
 
 #[cfg_attr(any(test, feature = "faux"), faux::create)]
 #[derive(Clone)]
-pub struct Service {
-    repo: DummyRepository,
+pub struct TodoService {
+    repo: TodoRepository,
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -15,17 +15,15 @@ pub enum Error {}
 
 /// the `HelloService`
 #[cfg_attr(any(test, feature = "faux"), faux::methods)]
-impl Service {
+impl TodoService {
     #[must_use]
-    pub const fn new(repo: DummyRepository) -> Self {
+    pub const fn new(repo: TodoRepository) -> Self {
         Self { repo }
     }
 
     /// return an example message
     #[must_use]
-    pub fn message(&self) -> String {
-        "Hello, World from Service!".to_string()
-    }
+    pub 
 
     /// Showcase accessing a repository
     ///
@@ -56,11 +54,11 @@ impl Service {
 #[cfg(test)]
 mod test {
     use super::Service;
-    use repository::dummy::DummyRepository;
+    use repository::todo::TodoRepository;
 
     #[test]
     fn test_message() {
-        let repo = DummyRepository::faux();
+        let repo = TodoRepository::faux();
 
         let service = Service::new(repo);
         let actual = service.message();
@@ -71,7 +69,7 @@ mod test {
 
     #[tokio::test]
     async fn test_number() {
-        let mut repo = DummyRepository::faux();
+        let mut repo = TodoRepository::faux();
         faux::when!(repo.fetch).then(|_| Ok(42));
 
         let service = Service::new(repo);

@@ -9,6 +9,7 @@ publish = false
 sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
 thiserror = "2.0.12"
 faux = { version = "0.1.12", optional = true }
+futures = "0.3.31"
 
 [dev-dependencies]
 testcontainers = "0.24.0"
