@@ -9,3 +9,5 @@ application = { path = "../application" }
 sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
 domain = { path = "../domain" }
 errors = { path = "../errors" }
+futures = "0.3.31"
+async-trait = "0.1.88"
