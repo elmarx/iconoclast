@@ -8,3 +8,4 @@ publish = false
 domain = { path = "../domain" }
 errors = { path = "../errors" }
 futures = "0.3.31"
+async-trait = "0.1.88"
