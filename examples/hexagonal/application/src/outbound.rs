@@ -1,8 +1,8 @@
-
 use domain::Task;
 use errors::SqlxError;
 use futures::Stream;
 
+#[cfg_attr(test, mockall::automock)]
 pub trait TaskRepository {
     fn insert(&self, desc: &str) -> impl Future<Output = Result<i64, SqlxError>>;
 
