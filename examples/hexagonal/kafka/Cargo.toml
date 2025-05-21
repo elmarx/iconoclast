@@ -1,0 +1,9 @@
+[package]
+name = "adapter-kafka"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+domain = { path = "../domain" }
+application = { path = "../application" }

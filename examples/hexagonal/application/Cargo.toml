@@ -1,0 +1,10 @@
+[package]
+name = "application"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+domain = { path = "../domain" }
+errors = { path = "../errors" }
+futures = "0.3.31"

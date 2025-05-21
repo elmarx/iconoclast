@@ -1,0 +1,11 @@
+[package]
+name = "adapter-repository"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+application = { path = "../application" }
+sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
+domain = { path = "../domain" }
+errors = { path = "../errors" }
