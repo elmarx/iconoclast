@@ -1,0 +1,11 @@
+[package]
+name = "main"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+application = { path = "../application" }
+repository = { path = "../repository" }
+kafka = { path = "../kafka" }
+path = { path = "../web" }
