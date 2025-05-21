@@ -2,6 +2,7 @@ use domain::{Task, TaskId};
 use errors::RepositoryError;
 use futures::Stream;
 
+#[cfg_attr(test, mockall::automock)]
 #[async_trait::async_trait]
 pub trait TaskRepository: Send + Sync {
     async fn insert(&self, desc: &str) -> Result<TaskId, RepositoryError>;
