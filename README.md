@@ -29,7 +29,7 @@ It started as a project-template, but now also includes a crate for reusable cod
 
 ## Usage
 
-See [the skeleton's README](./skeleton/README.md) for actual usage.
+See [the skeleton's README](./examples/skeleton/README.md) for actual usage.
 
 # The name
 
