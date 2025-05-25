@@ -1,5 +1,5 @@
 [package]
-name = "main"
+name = "hex-main"
 version = "0.1.0"
 edition = "2024"
 publish = false
@@ -9,3 +9,9 @@ application = { path = "../application" }
 adapter-repository = { path = "../repository" }
 adapter-kafka = { path = "../kafka" }
 adapter-web = { path = "../web" }
+iconoclast = { features = ["kafka"], path = "../../../iconoclast" }
+tokio = { version = "1.44.2", features = ["full"] }
+tracing = "0.1.41"
+
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = "0.6"
