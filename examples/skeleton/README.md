@@ -21,7 +21,7 @@ A Rust-based service.
 - start development-service: `docker-compose up -d`
 - make sure [*direnv* reads `.envrc`](https://direnv.net/)
 - [sqlx migrate run](https://github.com/launchbadge/sqlx/tree/main/sqlx-cli#create-and-run-migrations)
-- `bacon long-run` or `systemfd --no-pid -s http::80c80 -- bacon long-run`
+- `bacon long-run` or `systemfd --no-pid -s http::8080 -- bacon long-run`
 - `bacon test` or `bacon nextest`
 - `just ci` to execute all relevant tests, checks etc. for the different feature-sets
 
