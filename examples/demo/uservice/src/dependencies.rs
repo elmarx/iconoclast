@@ -2,7 +2,6 @@
 
 use crate::error::AppError;
 use crate::message_handler::MessageHandler;
-use crate::settings::Settings;
 use iconoclast::kafka;
 use logic::hello::Service as HelloService;
 use model::messages::topics::{ParseError, Payload, TOPICS};
@@ -17,7 +16,7 @@ pub struct BuildingBlocks {
 
 impl BuildingBlocks {
     /// initialize and wire up all the dependencies
-    pub async fn wire(settings: &Settings) -> Result<Self, AppError> {
+    pub async fn wire(settings: &iconoclast::DefaultServiceConfig) -> Result<Self, AppError> {
         let Repositories { dummy } = repository::init(settings.database_url.as_deref()).await?;
         let hello_service = HelloService::new(dummy);
 

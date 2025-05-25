@@ -9,7 +9,7 @@ authors = ["Elmar Athmer"]
 license = "MIT OR Apache-2.0"
 
 [features]
-default = ["listenfd"]
+default = ["listenfd", "config"]
 listenfd = ["dep:listenfd"]
 livereload = ["dep:tower-livereload"]
 kafka = [
@@ -42,6 +42,7 @@ thiserror = "2.0.12"
 futures = { version = "0.3.31", optional = true }
 tokio-stream = { version = "0.1.17", optional = true }
 tower-livereload = { version = "0.9.6", optional = true }
+config = { version = "0.15.11", features = ["toml"], optional = true }
 
 [dev-dependencies]
 faux = "0.1.12"

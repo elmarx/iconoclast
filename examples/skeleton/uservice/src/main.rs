@@ -1,5 +1,3 @@
-use settings::Settings;
-
 use dependencies::BuildingBlocks;
 use futures::future::TryFutureExt;
 use iconoclast::{logging, management, server};
@@ -20,7 +18,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let settings = Settings::emerge()?;
+    let settings = settings::emerge()?;
 
     logging::init(&settings.iconoclast.logging).await;
 
