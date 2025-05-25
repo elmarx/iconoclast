@@ -6,7 +6,7 @@ publish = false
 
 [dependencies]
 application = { path = "../application" }
-sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres"] }
+sqlx = { version = "0.8.5", features = ["runtime-tokio", "tls-rustls-ring-native-roots", "postgres", "uuid"] }
 domain = { path = "../domain" }
 errors = { path = "../errors" }
 futures = "0.3.31"

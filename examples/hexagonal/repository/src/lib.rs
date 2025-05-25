@@ -35,9 +35,9 @@ pub async fn init(
         PgPool::connect_with(PgConnectOptions::new()).await?
     };
 
-    let migrate = async move || MIGRATOR.run(&pool).await;
+    let repo = TaskRepository::new(pool.clone());
 
-    let repo = TaskRepository {};
+    let migrate = async move || MIGRATOR.run(&pool).await;
 
     Ok((migrate, repo))
 }
