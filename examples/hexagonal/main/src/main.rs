@@ -23,7 +23,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("{settings:?}");
 
-    let router = wire(&settings).await?;
+    let (run_migrations, router) = wire(&settings).await?;
+
+    run_migrations().await?;
 
     // TODO: also start the management port. But this would require proper (kafka-) types to use StartupError.
     server::start(settings.iconoclast.port, router).await?;
