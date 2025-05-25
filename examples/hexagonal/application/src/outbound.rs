@@ -9,7 +9,7 @@ pub trait TaskRepository: Send + Sync {
 
     async fn find_by_id(&self, id: TaskId) -> Result<Option<Task>, RepositoryError>;
 
-    fn find_all(&self) -> impl Stream<Item = Result<Task, RepositoryError>>;
+    fn find_all(&self) -> impl Stream<Item = Result<Task, RepositoryError>> + Send;
 }
 
 #[cfg(test)]
