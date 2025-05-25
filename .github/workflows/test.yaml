@@ -58,6 +58,7 @@ jobs:
       - name: use iconoclast from source
         run: |
           cat <<EOF >> examples/skeleton/Cargo.toml
+          
           [patch.crates-io]
           iconoclast = { path = "../../iconoclast" }
           EOF
