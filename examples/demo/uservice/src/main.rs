@@ -1,12 +1,12 @@
 use dependencies::BuildingBlocks;
 use futures::future::TryFutureExt;
 use iconoclast::{logging, management, server};
+use std::error::Error;
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
 
 pub mod dependencies;
-mod error;
 mod message_handler;
 
 // Jemalloc reduces heap-fragmentation and yields a way better memory-profile for the application
@@ -18,7 +18,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<(), Box<dyn Error>> {
     let settings = iconoclast::DefaultServiceConfig::emerge(DEFAULT_CONFIG)?;
 
     logging::init(&settings.iconoclast.logging).await;
