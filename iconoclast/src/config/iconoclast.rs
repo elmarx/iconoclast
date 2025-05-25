@@ -2,7 +2,7 @@ use crate::logging;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-pub struct IconoclastConfig {
+pub struct Config {
     /// port for the main service
     pub port: u16,
     /// management port

@@ -9,3 +9,4 @@ This crate includes reusable code that may be shared across "iconoclast-style" p
 - live-reload
 - listen-fd support
 - kafka
+- TOML-configuration (via [config](https://docs.rs/config/latest/config/)) (feature `config`)

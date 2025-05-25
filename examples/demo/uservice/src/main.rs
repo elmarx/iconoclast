@@ -1,5 +1,3 @@
-use settings::Settings;
-
 use dependencies::BuildingBlocks;
 use futures::future::TryFutureExt;
 use iconoclast::{logging, management, server};
@@ -10,7 +8,6 @@ use tracing::info;
 pub mod dependencies;
 mod error;
 mod message_handler;
-pub mod settings;
 
 // Jemalloc reduces heap-fragmentation and yields a way better memory-profile for the application
 // in almost all cases Jemalloc is the better choice.
@@ -18,9 +15,11 @@ pub mod settings;
 #[global_allocator]
 static GLOBAL: Jemalloc = Jemalloc;
 
+const DEFAULT_CONFIG: &str = include_str!("../../config.default.toml");
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let settings = Settings::emerge()?;
+    let settings = iconoclast::DefaultServiceConfig::emerge(DEFAULT_CONFIG)?;
 
     logging::init(&settings.iconoclast.logging).await;
 
