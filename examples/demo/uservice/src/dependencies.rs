@@ -1,11 +1,11 @@
 //! initialization of the object graph/dependencies
 
-use crate::error::AppError;
 use crate::message_handler::MessageHandler;
 use iconoclast::kafka;
 use logic::hello::Service as HelloService;
 use model::messages::topics::{ParseError, Payload, TOPICS};
 use repository::Repositories;
+use std::error::Error;
 use web::Router;
 
 /// building blocks that make up the (micro-) service
@@ -16,7 +16,7 @@ pub struct BuildingBlocks {
 
 impl BuildingBlocks {
     /// initialize and wire up all the dependencies
-    pub async fn wire(settings: &iconoclast::DefaultServiceConfig) -> Result<Self, AppError> {
+    pub async fn wire(settings: &iconoclast::DefaultServiceConfig) -> Result<Self, Box<dyn Error>> {
         let Repositories { dummy } = repository::init(settings.database_url.as_deref()).await?;
         let hello_service = HelloService::new(dummy);
 

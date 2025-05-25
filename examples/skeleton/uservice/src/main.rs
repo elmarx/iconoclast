@@ -1,12 +1,12 @@
 use dependencies::BuildingBlocks;
 use futures::future::TryFutureExt;
 use iconoclast::{logging, management, server};
+use std::error::Error;
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
 
 pub mod dependencies;
-mod error;
 mod message_handler;
 pub mod settings;
 
@@ -17,7 +17,7 @@ pub mod settings;
 static GLOBAL: Jemalloc = Jemalloc;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
+async fn main() -> Result<(), Box<dyn Error>> {
     let settings = settings::emerge()?;
 
     logging::init(&settings.iconoclast.logging).await;

@@ -12,7 +12,6 @@ gcloud = [
 ]
 
 [dependencies]
-thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full"] }
 tracing = "0.1.41"
 repository = { path = "../repository" }
