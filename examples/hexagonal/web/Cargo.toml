@@ -8,6 +8,8 @@ publish = false
 axum = { version = "0.8.3", features = ["macros"] }
 axum-extra = { version = "0.10.1", features = ["error-response"] }
 application = { path = "../application" }
+futures = "0.3.31"
+itertools = "0.14.0"
 
 [dev-dependencies]
 tower = { version = "0.5.2", features = ["util"] }

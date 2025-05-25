@@ -1,16 +1,35 @@
 use application::inbound;
 pub use axum::Router;
+use axum::extract::State;
 use axum::response::Html;
 use axum::response::IntoResponse;
-use std::sync::Arc;
+use futures::TryStreamExt;
+use itertools::Itertools;
 
-pub fn init(endpoint: impl inbound::Endpoint + 'static) -> Router {
+pub fn init<T>(endpoint: T) -> Router
+where
+    T: inbound::Endpoint + Clone + 'static,
+{
     Router::new()
-        .route("/", axum::routing::get(index))
-        .with_state(Arc::new(endpoint))
+        .route("/", axum::routing::get(index::<T>))
+        .with_state(endpoint)
 }
 
-async fn index() -> impl IntoResponse {
+async fn index<T>(State(service): State<T>) -> impl IntoResponse
+where
+    T: inbound::Endpoint,
+{
+    let todos = service.list_todos().try_collect::<Vec<_>>().await.unwrap();
+
+    let number = format!("<p>there are {} todos</p>", todos.len());
+
+    let todos = todos
+        .into_iter()
+        .map(|t| format!("<li>{t:?}</li>"))
+        .join("\n");
+
     // language=html
-    Html("<body><h1>Hello, World</h1></body>")
+    Html(format!(
+        "<body><h1>Hello, World</h1>{number}<ul>{todos}</ul></body>"
+    ))
 }
