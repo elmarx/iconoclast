@@ -5,6 +5,7 @@ use futures::Stream;
 
 use sqlx::PgPool;
 
+#[derive(Clone)]
 pub struct Repository {
     pool: PgPool,
 }

@@ -6,6 +6,7 @@ use domain::TaskId;
 use errors::RepositoryError;
 use futures::Stream;
 
+#[derive(Clone)]
 pub struct TodoService<T: TaskRepository> {
     repository: T,
 }
