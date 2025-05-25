@@ -11,3 +11,8 @@ domain = { path = "../domain" }
 errors = { path = "../errors" }
 futures = "0.3.31"
 async-trait = "0.1.88"
+
+[dev-dependencies]
+testcontainers-modules = { version = "0.12.0", features = ["postgres", "blocking"] }
+testcontainers = { version = "0.24.0", features = ["reusable-containers"] }
+ctor = "0.4.2"

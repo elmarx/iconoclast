@@ -4,6 +4,8 @@ use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
 pub use task::Repository as TaskRepository;
 
 pub mod task;
+#[cfg(test)]
+mod test_database;
 
 /// Initializes the database connection and returns the repositories.
 ///

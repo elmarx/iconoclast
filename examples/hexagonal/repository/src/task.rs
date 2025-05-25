@@ -3,7 +3,7 @@ use domain::TaskId;
 use errors::RepositoryError;
 use futures::Stream;
 
-pub struct Repository {}
+pub struct Repository;
 
 #[async_trait::async_trait]
 impl TaskRepository for Repository {
