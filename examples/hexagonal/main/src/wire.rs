@@ -5,7 +5,10 @@ use application::service::TodoService;
 use std::error::Error;
 
 pub async fn wire(settings: &ServiceSettings) -> Result<web::Router, Box<dyn Error>> {
-    let task_repository = repository::init(settings.database_url.as_deref()).await?;
+    let (run_migrations, task_repository) =
+        repository::init(settings.database_url.as_deref()).await?;
+
+    run_migrations().await?;
 
     let service = TodoService::new(task_repository);
 

@@ -1,5 +1,8 @@
 use sqlx::PgPool;
+use sqlx::migrate::Migrator;
 use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
+
+static MIGRATOR: Migrator = sqlx::migrate!();
 
 pub use task::Repository as TaskRepository;
 
@@ -15,15 +18,25 @@ mod test_database;
 /// # Errors
 ///
 /// fails if no DB connection could be established
-pub async fn init(url: Option<&str>) -> Result<TaskRepository, sqlx::Error> {
-    let _pool = if let Some(url) = url {
+pub async fn init(
+    url: Option<&str>,
+) -> Result<
+    (
+        impl AsyncFnOnce() -> Result<(), sqlx::migrate::MigrateError>,
+        TaskRepository,
+    ),
+    sqlx::Error,
+> {
+    let pool = if let Some(url) = url {
         PgPoolOptions::new().max_connections(5).connect(url).await?
     } else {
         // if no url is given, read connection parameters from env
         PgPool::connect_with(PgConnectOptions::new()).await?
     };
 
+    let migrate = async move || MIGRATOR.run(&pool).await;
+
     let repo = TaskRepository {};
 
-    Ok(repo)
+    Ok((migrate, repo))
 }
