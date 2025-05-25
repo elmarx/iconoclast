@@ -14,7 +14,7 @@ It started as a project-template, but now also includes a crate for reusable cod
     - repository (for persistence)
 - testable (with mocks/fakes)
 - manual dependency-injection
-- configuration via file and environment-variables
+- configuration via TOML-file and environment-variables (based on [config](https://docs.rs/config/latest/config/))
 - "structured" (json) [logging/tracing](https://tracing.rs)
 - [axum](https://github.com/tokio-rs/axum) for http
 - [HTML templating with askama](https://askama.readthedocs.io) (a jinja-like templating) with
