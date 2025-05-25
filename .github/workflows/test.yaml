@@ -67,9 +67,13 @@ jobs:
         run: cargo check --all-targets
         working-directory: examples/skeleton
 
-      - name: restore manifest
-        run: git restore examples/skeleton/Cargo.toml
-
+  skeleton_oci:
+    name: test skeleton OCI image
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
