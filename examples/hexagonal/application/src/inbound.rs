@@ -5,7 +5,7 @@ use futures::Stream;
 
 #[async_trait]
 pub trait Endpoint: Send + Sync {
-    fn list_todos(&self) -> impl Stream<Item = Result<domain::Task, RepositoryError>>;
+    fn list_todos(&self) -> impl Stream<Item = Result<domain::Task, RepositoryError>> + Send;
 
     async fn add_todo(&self, desc: &str) -> Result<TaskId, RepositoryError>;
 }
