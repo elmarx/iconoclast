@@ -1,5 +1,6 @@
 use application::inbound;
 pub use axum::Router;
+use axum::response::Html;
 use axum::response::IntoResponse;
 use std::sync::Arc;
 
@@ -10,5 +11,6 @@ pub fn init(endpoint: impl inbound::Endpoint + 'static) -> Router {
 }
 
 async fn index() -> impl IntoResponse {
-    "Index"
+    // language=html
+    Html("<body><h1>Hello, World</h1></body>")
 }
