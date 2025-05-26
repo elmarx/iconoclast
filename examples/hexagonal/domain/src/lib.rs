@@ -1,5 +1,6 @@
 use uuid::Uuid;
 
+pub mod event;
 pub mod from;
 
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]

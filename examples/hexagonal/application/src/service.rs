@@ -1,8 +1,9 @@
-use crate::inbound::Endpoint;
+use crate::inbound::{Endpoint, TaskEventHandler};
 use crate::outbound::TaskRepository;
 use async_trait::async_trait;
-use domain::Task;
 use domain::TaskId;
+use domain::event::Task::{Added, Deleted};
+use domain::{Task, event};
 use errors::RepositoryError;
 use futures::Stream;
 
@@ -28,12 +29,30 @@ impl<T: TaskRepository> Endpoint for TodoService<T> {
     }
 }
 
+#[async_trait]
+impl<T: TaskRepository> TaskEventHandler for TodoService<T> {
+    async fn task(&self, e: event::Task) -> Result<(), RepositoryError> {
+        match e {
+            Deleted(task_id) => {
+                self.repository.delete_by_id(task_id).await?;
+            }
+            Added(task_id, description) => {
+                self.repository
+                    .insert_with_id(task_id, &description)
+                    .await?;
+            }
+        }
+
+        Ok(())
+    }
+}
+
 #[cfg(test)]
 mod test {
-    use crate::inbound::Endpoint;
+    use crate::inbound::{Endpoint, TaskEventHandler};
     use crate::outbound::MockTaskRepository;
     use crate::service::TodoService;
-    use domain::TaskId;
+    use domain::{TaskId, event};
     use futures::StreamExt;
     use futures::{TryStreamExt, stream};
     use mockall::predicate::eq;
@@ -76,5 +95,40 @@ mod test {
         let expected = vec![sample_a, sample_b];
 
         assert_eq!(actual, expected);
+    }
+
+    #[tokio::test]
+    async fn test_event_handler_add_todo() {
+        let sample_id = TaskId::new();
+        let sample_desc = "A".to_string();
+
+        let sample = event::Task::Added(sample_id, sample_desc.clone());
+
+        let mut mock = MockTaskRepository::new();
+        mock.expect_insert_with_id()
+            .with(eq(sample_id), eq(sample_desc))
+            .once()
+            .returning(|_, _| Ok(()));
+
+        let handler = TodoService::new(mock);
+
+        handler.task(sample).await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn test_event_handler_delete_todo() {
+        let sample_id = TaskId::new();
+
+        let sample = event::Task::Deleted(sample_id);
+
+        let mut mock = MockTaskRepository::new();
+        mock.expect_delete_by_id()
+            .with(eq(sample_id))
+            .once()
+            .returning(|_| Ok(true));
+
+        let handler = TodoService::new(mock);
+
+        handler.task(sample).await.unwrap();
     }
 }
