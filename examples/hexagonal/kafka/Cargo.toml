@@ -7,3 +7,6 @@ publish = false
 [dependencies]
 domain = { path = "../domain" }
 application = { path = "../application" }
+rdkafka = { version = "0.37.0", default-features = false }
+uuid = "1.17.0"
+thiserror = "2.0.12"
