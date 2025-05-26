@@ -5,13 +5,13 @@ use model::messages;
 type LogicalError = logic::hello::Error;
 
 // wrapper to keep rdkafka out of the model and allow implementation of `TryFrom<&kafka::BorrowedMessage<'_>>` here
-pub struct Payload(messages::topics::Payload);
+pub struct Payload(messages::Payload);
 
 impl TryFrom<&kafka::BorrowedMessage<'_>> for Payload {
-    type Error = messages::topics::ParseError;
+    type Error = messages::DecodeError;
 
     fn try_from(msg: &kafka::BorrowedMessage) -> Result<Self, Self::Error> {
-        let payload = messages::topics::Payload::try_from((msg.topic(), msg.payload()))?;
+        let payload = messages::Payload::try_from((msg.topic(), msg.payload()))?;
         Ok(Self(payload))
     }
 }
@@ -34,7 +34,7 @@ impl kafka::MessageHandler<LogicalError> for MessageHandler {
         Payload(msg): Self::Message,
     ) -> impl Future<Output = Result<(), LogicalError>> {
         match msg {
-            messages::topics::Payload::Hello(p) => self.hello_service.handle(p),
+            messages::Payload::Hello(p) => self.hello_service.handle(p),
         }
     }
 }

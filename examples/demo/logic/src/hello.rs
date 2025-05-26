@@ -1,6 +1,6 @@
 //! a module showcasing a service with persistence and tests
 
-use model::messages::hello;
+use model::messages::topic_hello;
 use repository::dummy::DummyRepository;
 use tracing::warn;
 
@@ -41,12 +41,12 @@ impl Service {
     /// Might also go into another service, just an example.
     ///
     /// Will fail with its own error-type
-    pub async fn handle(&self, m: hello::Message) -> Result<(), Error> {
+    pub async fn handle(&self, m: topic_hello::Message) -> Result<(), Error> {
         match m {
-            hello::Message::Name(name) => {
+            topic_hello::Message::Name(name) => {
                 self.repo.insert(&name).await.unwrap();
             }
-            hello::Message::Tombstone => warn!("someone is dead"),
+            topic_hello::Message::Tombstone => warn!("someone is dead"),
         }
 
         Ok(())
