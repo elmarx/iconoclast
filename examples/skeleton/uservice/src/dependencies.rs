@@ -1,16 +1,17 @@
 //! initialization of the object graph/dependencies
 
 use crate::message_handler::MessageHandler;
+use crate::message_handler::Payload;
 use crate::settings::Settings;
 use iconoclast::kafka;
-use model::topics::{ParseError, Payload, TOPICS};
+use model::topics;
 use std::error::Error;
 use web::Router;
 
 /// building blocks that make up the (micro-) service
 pub struct BuildingBlocks {
     pub app: Router,
-    pub consumer: kafka::Consumer<MessageHandler, Payload, ParseError, logic::Error>,
+    pub consumer: kafka::Consumer<MessageHandler, Payload, topics::ParseError, logic::Error>,
 }
 
 impl BuildingBlocks {
@@ -20,7 +21,7 @@ impl BuildingBlocks {
 
         let app = web::init();
         let message_handler = MessageHandler::new();
-        let consumer = kafka::Consumer::new(&settings.kafka, TOPICS, message_handler)?;
+        let consumer = kafka::Consumer::new(&settings.kafka, topics::TOPICS, message_handler)?;
 
         Ok(Self { app, consumer })
     }
