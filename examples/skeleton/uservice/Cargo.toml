@@ -15,7 +15,7 @@ gcloud = [
 tokio = { version = "1.44.2", features = ["full"] }
 tracing = "0.1.41"
 repository = { path = "../repository" }
-iconoclast = { features = ["kafka"], version = "0.1.0" }
+iconoclast = { features = ["kafka"], version = "0.2.0" }
 model = { path = "../model" }
 logic = { path = "../logic" }
 web = { path = "../web" }
