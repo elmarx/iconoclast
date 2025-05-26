@@ -13,7 +13,7 @@ use web::Router;
 pub struct BuildingBlocks {
     pub app: Router,
     pub consumer:
-        kafka::Consumer<MessageHandler, Payload, messages::topics::ParseError, logic::hello::Error>,
+        kafka::Consumer<MessageHandler, Payload, messages::DecodeError, logic::hello::Error>,
 }
 
 impl BuildingBlocks {
@@ -24,8 +24,7 @@ impl BuildingBlocks {
 
         let app = web::init(hello_service.clone());
         let message_handler = MessageHandler::new(hello_service);
-        let consumer =
-            kafka::Consumer::new(&settings.kafka, messages::topics::TOPICS, message_handler)?;
+        let consumer = kafka::Consumer::new(&settings.kafka, messages::TOPICS, message_handler)?;
 
         Ok(Self { app, consumer })
     }

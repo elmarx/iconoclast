@@ -1,3 +1,5 @@
+//! the "hello" topic: knows everything about the topic, how to decode messages etc.
+
 use crate::messages::KafkaPayload;
 use std::string::FromUtf8Error;
 
