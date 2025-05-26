@@ -1,7 +1,20 @@
 use iconoclast::kafka;
-use model::messages::topics::Payload;
+use iconoclast::kafka::MessageExt;
+use model::messages;
 
 type LogicalError = logic::hello::Error;
+
+// wrapper to keep rdkafka out of the model and allow implementation of `TryFrom<&kafka::BorrowedMessage<'_>>` here
+pub struct Payload(messages::topics::Payload);
+
+impl TryFrom<&kafka::BorrowedMessage<'_>> for Payload {
+    type Error = messages::topics::ParseError;
+
+    fn try_from(msg: &kafka::BorrowedMessage) -> Result<Self, Self::Error> {
+        let payload = messages::topics::Payload::try_from((msg.topic(), msg.payload()))?;
+        Ok(Self(payload))
+    }
+}
 
 pub struct MessageHandler {
     hello_service: logic::hello::Service,
@@ -13,10 +26,15 @@ impl MessageHandler {
     }
 }
 
-impl kafka::MessageHandler<Payload, LogicalError> for MessageHandler {
-    fn handle(&self, payload: Payload) -> impl Future<Output = Result<(), LogicalError>> {
-        match payload {
-            Payload::Hello(p) => self.hello_service.handle(p),
+impl kafka::MessageHandler<LogicalError> for MessageHandler {
+    type Message = Payload;
+
+    fn handle(
+        &self,
+        Payload(msg): Self::Message,
+    ) -> impl Future<Output = Result<(), LogicalError>> {
+        match msg {
+            messages::topics::Payload::Hello(p) => self.hello_service.handle(p),
         }
     }
 }

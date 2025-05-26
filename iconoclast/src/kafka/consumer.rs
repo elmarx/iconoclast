@@ -1,35 +1,36 @@
 use crate::kafka;
 use crate::kafka::{MessageHandler, StreamError};
 use futures::TryStreamExt;
+use rdkafka::ClientConfig;
 use rdkafka::consumer::{CommitMode, Consumer as ConsumerExt, StreamConsumer};
 use rdkafka::error::KafkaError;
 use rdkafka::message::BorrowedMessage;
-use rdkafka::{ClientConfig, Message};
 use std::error::Error;
 use std::marker::PhantomData;
 use tokio_stream::StreamExt;
 
-pub struct Consumer<M, P, PE, LE>
+pub struct Consumer<M, KM, DE, AE>
 where
-    M: MessageHandler<P, LE> + Send + Sync,
-    LE: Error + Send + Sync,
-    PE: Error + Send + Sync,
-    P: for<'a> TryFrom<(&'a str, Option<&'a [u8]>), Error = PE>,
+    M: MessageHandler<AE, Message = KM> + Send + Sync,
+    AE: Error + Send + Sync,
+    DE: Error + Send + Sync,
+    KM: for<'a> TryFrom<&'a BorrowedMessage<'a>, Error = DE>,
 {
+    /// actual rdkafka consumer
     consumer: StreamConsumer,
-    payload: PhantomData<P>,
-    parse_errors: PhantomData<PE>,
-    logic_errors: PhantomData<LE>,
+    application_error: PhantomData<AE>,
+    /// message handler that receives successfully decoded kafka messages
     handler: M,
+    /// list of topics to subscribe to. `KM` needs to implement [`TryFrom`] for all topics
     topics: &'static [&'static str],
 }
 
-impl<M, P, PE, LE> Consumer<M, P, PE, LE>
+impl<M, KM, DE, AE> Consumer<M, KM, DE, AE>
 where
-    M: MessageHandler<P, LE> + Send + Sync,
-    LE: Error + Send + Sync,
-    PE: Error + Send + Sync,
-    P: for<'a> TryFrom<(&'a str, Option<&'a [u8]>), Error = PE> + Send + Sync,
+    M: MessageHandler<AE, Message = KM> + Send + Sync,
+    AE: Error + Send + Sync,
+    DE: Error + Send + Sync,
+    KM: for<'a> TryFrom<&'a BorrowedMessage<'a>, Error = DE> + Send + Sync,
 {
     pub fn new(
         config: &kafka::Config,
@@ -41,32 +42,30 @@ where
         cfg.extend(config.properties.into_iter().map(|(k, v)| (k, v.into())));
         cfg.extend(config.env_properties);
 
-        let consumer: StreamConsumer = cfg.create()?;
+        let rdkafka_consumer: StreamConsumer = cfg.create()?;
 
         Ok(Self {
-            consumer,
-            payload: PhantomData,
-            parse_errors: PhantomData,
-            logic_errors: PhantomData,
+            consumer: rdkafka_consumer,
+            application_error: PhantomData,
             topics,
             handler,
         })
     }
 
-    pub async fn start(&self) -> Result<(), StreamError<PE, LE>> {
+    /// start consuming by subscribing to topics and polling for items (via [`rdkafka::consumer::StreamConsumer`])
+    pub async fn start(&self) -> Result<(), StreamError<DE, AE>> {
         self.consumer.subscribe(self.topics)?;
 
         self.consumer
             .stream()
-            .then(async |m| -> Result<BorrowedMessage, StreamError<PE, LE>> {
+            .then(async |m| -> Result<BorrowedMessage, StreamError<DE, AE>> {
                 let bm = m?;
-                let payload =
-                    P::try_from((bm.topic(), bm.payload())).map_err(StreamError::Parse)?;
+                let message = KM::try_from(&bm).map_err(StreamError::Decode)?;
 
                 self.handler
-                    .handle(payload)
+                    .handle(message)
                     .await
-                    .map_err(StreamError::Logic)?;
+                    .map_err(StreamError::Application)?;
 
                 Ok(bm)
             })

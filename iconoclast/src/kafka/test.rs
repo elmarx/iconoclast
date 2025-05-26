@@ -1,7 +1,8 @@
 use crate::kafka::{MessageHandler, consumer};
 use consumer::Consumer;
-use rdkafka::ClientConfig;
+use rdkafka::message::BorrowedMessage;
 use rdkafka::producer::{FutureProducer, FutureRecord};
+use rdkafka::{ClientConfig, Message};
 use std::collections::HashMap;
 use std::convert::Infallible;
 use tokio::sync::oneshot;
@@ -20,7 +21,9 @@ async fn publish(brokers: String, topic: &str, key: &str, payload: &str) {
 struct TestHandler {}
 
 #[faux::methods]
-impl MessageHandler<Pl, Infallible> for TestHandler {
+impl MessageHandler<Infallible> for TestHandler {
+    type Message = Pl;
+
     async fn handle(&self, _payload: Pl) -> Result<(), Infallible> {
         unimplemented!("mock")
     }
@@ -29,13 +32,15 @@ impl MessageHandler<Pl, Infallible> for TestHandler {
 #[derive(Debug, PartialEq, Eq)]
 struct Pl(String);
 
-impl TryFrom<(&str, Option<&[u8]>)> for Pl {
+impl TryFrom<&BorrowedMessage<'_>> for Pl {
     type Error = Infallible;
 
-    fn try_from((_topic, payload): (&str, Option<&[u8]>)) -> Result<Self, Self::Error> {
-        Ok(Self(
-            String::from_utf8(Vec::from(payload.unwrap())).unwrap(),
-        ))
+    fn try_from(bm: &BorrowedMessage) -> Result<Self, Self::Error> {
+        let payload = bm.payload();
+        let payload = payload.unwrap();
+        let message = String::from_utf8(Vec::from(payload));
+
+        Ok(Self(message.unwrap()))
     }
 }
 
