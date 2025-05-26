@@ -1,17 +1,15 @@
 use rdkafka::error::KafkaError;
 use std::error::Error;
+
+/// possible errors when consuming kafka messages
 #[derive(thiserror::Error, Debug)]
-pub enum StreamError<PE, LE>
-where
-    PE: Error,
-    LE: Error,
-{
+pub enum StreamError<DE: Error, AE: Error> {
     #[error(transparent)]
     Kafka(#[from] KafkaError),
 
     #[error(transparent)]
-    Logic(LE),
+    Application(AE),
 
     #[error(transparent)]
-    Parse(PE),
+    Decode(DE),
 }
