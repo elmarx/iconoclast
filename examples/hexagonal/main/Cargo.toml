@@ -12,6 +12,7 @@ adapter-web = { path = "../web" }
 iconoclast = { features = ["kafka"], path = "../../../iconoclast" }
 tokio = { version = "1.44.2", features = ["full"] }
 tracing = "0.1.41"
+futures = "0.3.31"
 
 [target.'cfg(not(target_env = "msvc"))'.dependencies]
 tikv-jemallocator = "0.6"

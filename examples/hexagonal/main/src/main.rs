@@ -1,4 +1,5 @@
 use crate::wire::wire;
+use futures::future::TryFutureExt;
 use iconoclast::{logging, server};
 use tikv_jemallocator::Jemalloc;
 use tracing::info;
@@ -23,10 +24,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("{settings:?}");
 
-    let router = wire(&settings).await?;
+    let (router, consumer) = wire(&settings).await?;
 
-    // TODO: also start the management port. But this would require proper (kafka-) types to use StartupError.
-    server::start(settings.iconoclast.port, router).await?;
+    let (_main_server, _management_server, _consumer) = tokio::try_join!(
+        server::start(settings.iconoclast.port, router).map_err(iconoclast::StartupError::from),
+        iconoclast::management::start(settings.iconoclast.management_port)
+            .map_err(iconoclast::StartupError::from),
+        consumer.start().map_err(iconoclast::StartupError::from)
+    )?;
 
     Ok(())
 }
