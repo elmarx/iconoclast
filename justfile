@@ -14,4 +14,4 @@ ci:
 
 # build a re-distributable service-skeleton
 dist_skeleton:
-    tar czf service-skeleton.tar.gz -C examples --exclude=.idea --exclude=target --transform='s,^skeleton,iconoclast-skeleton,' skeleton
+    tar czf service-skeleton.tar.gz --exclude=.idea --exclude=target skeleton

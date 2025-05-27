@@ -45,7 +45,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:
-          workspaces: "examples/skeleton"
+          workspaces: skeleton
       - name: Install cargo-nextest
         uses: taiki-e/install-action@cargo-nextest
 
@@ -53,19 +53,19 @@ jobs:
         run: sudo apt-get install libsasl2-dev
 
       - run: cargo fmt --check
-        working-directory: examples/skeleton
+        working-directory: skeleton
 
       - name: use iconoclast from source
         run: |
-          cat <<EOF >> examples/skeleton/Cargo.toml
+          cat <<EOF >> skeleton/Cargo.toml
           
           [patch."crates-io"]
-          iconoclast = { path = "../../iconoclast" }
+          iconoclast = { path = "../iconoclast" }
           EOF
 
       - name: compile skeleton
         run: cargo check --all-targets
-        working-directory: examples/skeleton
+        working-directory: skeleton
 
   skeleton_oci:
     name: test skeleton OCI image
@@ -81,6 +81,6 @@ jobs:
         id: push
         uses: docker/build-push-action@v6
         with:
-          context: examples/skeleton
+          context: skeleton
           cache-from: type=gha
           cache-to: type=gha,mode=max
