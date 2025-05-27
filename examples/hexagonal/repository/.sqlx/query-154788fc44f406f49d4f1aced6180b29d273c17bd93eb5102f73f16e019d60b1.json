@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select task_id as id, description from task where task_id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "description",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "154788fc44f406f49d4f1aced6180b29d273c17bd93eb5102f73f16e019d60b1"
+}
