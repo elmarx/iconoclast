@@ -1,0 +1,21 @@
+[package]
+name = "iconoclastd"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+application = { path = "../application" }
+adapter-repository = { path = "../repository" }
+adapter-kafka = { path = "../kafka" }
+adapter-web = { path = "../web" }
+iconoclast = { features = ["kafka"], version = "0.2.0" }
+tokio = { version = "1.44.2", features = ["full"] }
+tracing = "0.1.41"
+futures = "0.3.31"
+
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = "0.6"
+
+[dev-dependencies]
+iconoclast = { features = ["kafka", "livereload"], version = "0.2.0" }

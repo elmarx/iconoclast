@@ -1,0 +1,15 @@
+[package]
+name = "application"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+domain = { path = "../domain" }
+errors = { path = "../errors" }
+futures = "0.3.31"
+async-trait = "0.1.88"
+
+[dev-dependencies]
+tokio = { version = "1.44.2", default-features = false, features = ["rt", "macros"] }
+mockall = "0.13.1"
