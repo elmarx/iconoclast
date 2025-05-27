@@ -1,0 +1,6 @@
+[iconoclast]
+port = 8080
+
+[kafka]
+"group.id" = "iconoclast-hexagonal-demo"
+"auto.offset.reset" = "beginning"
