@@ -37,6 +37,14 @@ It provides:
 
 See [the skeleton's README](./skeleton/README.md) for actual usage.
 
+## Development
+
+This project uses [rdkafka](https://github.com/fede1024/rust-rdkafka) which compiles rdkafka, so
+requires [some additional tooling](https://github.com/fede1024/rust-rdkafka#installation).
+
+For Debian-based distros it's typically *build-essential* plus *libssl-dev*, *libsasl2-dev* and *clang*. For MacOS
+besides the "typical" tools required for [brew](https://brew.sh/) you only need to additionally install `pkgconfig`.
+
 # The name
 
 *iconoclast* (aɪˈkɒnəˌklæst) —
