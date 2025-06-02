@@ -4,14 +4,17 @@
 
 Project iconoclast's aim is to significantly simplify the setup of Rust business applications.
 
-This project is a little more than a template (but much less than a full-stack framework). It started as a project-template, but now also includes a crate for reusable code.
+This project is a little more than a template (but much less than a full-stack framework). It started as a
+project-template, but now also includes a crate for reusable code.
 
 It provides:
 
-- a ready-to-use/copy project/[skeleton](./skeleton) for a rust application with [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
+- a ready-to-use/copy project/[skeleton](./skeleton) for a rust application
+  with [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))
 - [hexagonal TODO app](./examples/hexagonal) as a full example for a hexagonal rust service
 - [layered TODO app](./examples/layered) based on a traditional layered architecture
-- [simple TODO](./examples/simple) not enforcing a strict architecture, so maybe a better fit for small apps or e.g. CRUD apps
+- [simple TODO](./examples/simple) not enforcing a strict architecture, so maybe a better fit for small apps or e.g.
+  CRUD apps
 - crate
   *[iconoclast](https://crates.io/crates/iconoclast)* to reduce the amount of code required to copy-paste
 
@@ -25,17 +28,18 @@ It provides:
 - [axum](https://github.com/tokio-rs/axum) for http
 - [HTML templating with askama](https://askama.readthedocs.io) (a jinja-like templating) with
   [live-reload](https://github.com/leotaku/tower-livereload)
-- separate "management" service for [health-check](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/), metrics (TODO) etc.
+- separate "management" service
+  for [health-check](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/),
+  metrics (TODO) etc.
 - [kafka](https://github.com/fede1024/rust-rdkafka)
 - persistence via [sqlx](https://github.com/launchbadge/sqlx) and [PostgresQL](https://www.postgresql.org/)
 
 ## Getting started
 
-- copy over the `examples/skeleton` folder
-
-## Usage
-
-See [the skeleton's README](./skeleton/README.md) for actual usage.
+- copy over the `skeleton` folder (or via `just dist_skeleton`)
+- install software mentioned in [prerequisites](./skeleton/README.md#prerequisites)
+- check `TODO skeleton` for some basic hints where to start
+- see the [hexagonal TODO app](./examples/hexagonal) as an example
 
 ## Development
 
