@@ -1,5 +1,0 @@
-[iconoclast]
-port = 8080
-
-[kafka]
-"group.id" = "iconoclast-skeleton"
