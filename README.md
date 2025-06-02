@@ -12,8 +12,8 @@ It provides:
 - [hexagonal TODO app](./examples/hexagonal) as a full example for a hexagonal rust service
 - [layered TODO app](./examples/layered) based on a traditional layered architecture
 - [simple TODO](./examples/simple) not enforcing a strict architecture, so maybe a better fit for small apps or e.g. CRUD apps
-- crate [
-  *iconoclast*](https://crates.io/crates/iconoclast) to reduce the amount of code required to copy-paste
+- crate
+  *[iconoclast](https://crates.io/crates/iconoclast)* to reduce the amount of code required to copy-paste
 
 ## Features/Design
 
@@ -35,7 +35,7 @@ It provides:
 
 ## Usage
 
-See [the skeleton's README](./examples/skeleton/README.md) for actual usage.
+See [the skeleton's README](./skeleton/README.md) for actual usage.
 
 # The name
 

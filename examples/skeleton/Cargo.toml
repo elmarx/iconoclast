@@ -1,6 +1,0 @@
-[workspace]
-resolver = "2"
-members = ["logic", "model", "repository", "uservice", "web"]
-
-[profile.dev.package.sqlx-macros]
-opt-level = 3
