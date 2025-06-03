@@ -1,10 +1,12 @@
 use application::inbound;
+use askama::Template;
 pub use axum::Router;
 use axum::extract::State;
 use axum::response::Html;
 use axum::response::IntoResponse;
+use axum_extra::response::InternalServerError;
+use domain::Task;
 use futures::TryStreamExt;
-use itertools::Itertools;
 
 pub fn init<T>(endpoint: T) -> Router
 where
@@ -19,19 +21,16 @@ async fn index<T>(State(service): State<T>) -> impl IntoResponse
 where
     T: inbound::Endpoint,
 {
-    let todos = service.list_todos().try_collect::<Vec<_>>().await.unwrap();
+    #[derive(Debug, Template)]
+    #[template(path = "index.html")]
+    struct Tmpl {
+        tasks: Vec<Task>,
+    }
 
-    let number = format!("<p>there are {} todos</p>", todos.len());
+    let tasks = service.list_todos().try_collect::<Vec<_>>().await.unwrap();
 
-    let todos = todos
-        .into_iter()
-        .map(|t| format!("<li>{t:?}</li>"))
-        .join("\n");
-
-    // language=html
-    Html(format!(
-        "<body><h1>Hello, World</h1>{number}<ul>{todos}</ul></body>"
-    ))
+    let template = Tmpl { tasks };
+    Html(template.render().map_err(InternalServerError))
 }
 
 #[cfg(test)]

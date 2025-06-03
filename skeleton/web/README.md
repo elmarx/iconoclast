@@ -13,6 +13,16 @@ e.g. [authentication](https://docs.rs/tower-http/latest/tower_http/auth/struct.A
 typically
 implemented as tower-services.
 
+### Templating
+
+For templating, [askama](https://docs.rs/askama/latest/askama/) is pre-selected. Askama implements a [Jinja2-like](https://jinja.palletsprojects.com/en/stable/) syntax, compiling templates, thus catching errors at compile-time and automatically embedding templates.
+This, of course, comes with a trade-off, additional latency.
+
+The templating library can easily be replaced. Popular alternatives are:
+
+- [minijinja](https://docs.rs/minijinja/latest/minijinja/), closer to Jinja2, no compile-time checks 
+- [maud](https://maud.lambda.xyz/) for compile-time HTML templates
+
 ## Testing
 
 Sometimes it's simpler to just implement a trait for a test, especially since Axum requires cloning for state.
