@@ -1,3 +1,5 @@
+//! managment service (health check, etc.) implemented with axum
+
 use axum::routing::get;
 use axum::{Json, Router};
 use serde::Serialize;
