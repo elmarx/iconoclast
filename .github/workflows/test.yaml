@@ -68,7 +68,7 @@ jobs:
         working-directory: skeleton
 
   skeleton_oci:
-    name: test skeleton OCI image
+    name: skeleton OCI w/ iconoclast from crates.io
     runs-on: ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
@@ -77,10 +77,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
-        id: push
+      - name: Build Docker image with iconoclast from crates.io
         uses: docker/build-push-action@v6
         with:
           context: skeleton
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  skeleton_oci_from_source:
+    name: skeleton OCI w/ iconoclast from source
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image with iconoclast from source
+        uses: docker/build-push-action@v6
+        with:
+          context: skeleton
+          build-args: ICONOCLAST_SOURCE=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
