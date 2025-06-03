@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.2.0...iconoclast-v0.3.0) - 2025-06-03
+
+### Added
+
+- [**breaking**] require the MessageHandler to return topics to subscribe to
+
 ## [0.2.0](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.1.0...iconoclast-v0.2.0) - 2025-05-26
 
 ### Added
