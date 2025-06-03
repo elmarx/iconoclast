@@ -1,4 +1,6 @@
 FROM rust:1.87.0 AS builder
+# build iconoclast from source directly
+ARG ICONOCLAST_SOURCE=0
 WORKDIR /usr/src/service
 
 RUN apt-get update && apt-get install -y libssl-dev libsasl2-dev clang
@@ -13,6 +15,7 @@ RUN mkdir -p \
     web/src
 
 COPY Cargo.toml Cargo.lock* ./
+RUN if [ "$ICONOCLAST_SOURCE" != "0" ]; then echo "[patch.\"crates-io\"]\n\niconoclast = { git = \"https://github.com/elmarx/iconoclast.git\" rev = \"$ICONOCLAST_FROM_SOURCE\" }" >> Cargo.toml; fi;
 COPY application/Cargo.toml application/
 COPY domain/Cargo.toml domain/
 COPY errors/Cargo.toml errors/
