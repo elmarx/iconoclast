@@ -36,7 +36,9 @@ It provides:
 
 ## Getting started
 
-- copy over the `skeleton` folder (or via `just dist_skeleton`)
+- copy over the `skeleton` folder, fetch the
+  `iconoclast-skeleton-*.zip` from the artifacots of the latest [GHA Run](https://github.com/elmarx/iconoclast/actions/workflows/test-and-build.yaml), or use
+  `just dist_skeleton`
 - install software mentioned in [prerequisites](./skeleton/README.md#prerequisites)
 - check `TODO skeleton` for some basic hints where to start
 - see the [hexagonal TODO app](./examples/hexagonal) as an example
@@ -46,8 +48,10 @@ It provides:
 This project uses [rdkafka](https://github.com/fede1024/rust-rdkafka) which compiles rdkafka, so
 requires [some additional tooling](https://github.com/fede1024/rust-rdkafka#installation).
 
-For Debian-based distros it's typically *build-essential* plus *libssl-dev*, *libsasl2-dev* and *clang*. For MacOS
-besides the "typical" tools required for [brew](https://brew.sh/) you only need to additionally install `pkgconfig`.
+For Debian-based distros it's typically *build-essential* plus *libssl-dev*, *libsasl2-dev* and
+*clang*. For MacOS
+besides the "typical" tools required for [brew](https://brew.sh/) you only need to additionally install
+`pkgconfig`.
 
 # The name
 
