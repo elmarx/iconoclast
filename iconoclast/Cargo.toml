@@ -9,7 +9,7 @@ authors = ["Elmar Athmer"]
 license = "MIT OR Apache-2.0"
 
 [features]
-default = ["listenfd", "config"]
+default = ["listenfd", "config", "mgmt-axum"]
 listenfd = ["dep:listenfd"]
 livereload = ["dep:tower-livereload"]
 kafka = [
@@ -24,6 +24,8 @@ gcloud = [
     "dep:hyper-util",
     "dep:http-body-util",
 ]
+mgmt-axum = []
+
 
 [dependencies]
 axum = { version = "0.8.3", default-features = false, features = ["json", "tokio", "http1"] }
