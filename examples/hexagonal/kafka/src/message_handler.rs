@@ -18,6 +18,10 @@ impl<T: inbound::TaskEventHandler> KafkaListener<T> {
 impl<T: inbound::TaskEventHandler> MessageHandler<ApplicationError> for KafkaListener<T> {
     type Message = topic::TopicMessages;
 
+    fn topics() -> &'static [&'static str] {
+        topic::TOPICS
+    }
+
     fn handle(
         &self,
         kafka_message: Self::Message,

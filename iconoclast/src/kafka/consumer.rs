@@ -21,8 +21,6 @@ where
     application_error: PhantomData<AE>,
     /// message handler that receives successfully decoded kafka messages
     handler: M,
-    /// list of topics to subscribe to. `KM` needs to implement [`TryFrom`] for all topics
-    topics: &'static [&'static str],
 }
 
 impl<M, KM, DE, AE> Consumer<M, KM, DE, AE>
@@ -32,11 +30,7 @@ where
     DE: Error + Send + Sync,
     KM: for<'a> TryFrom<&'a BorrowedMessage<'a>, Error = DE> + Send + Sync,
 {
-    pub fn new(
-        config: &kafka::Config,
-        topics: &'static [&'static str],
-        handler: M,
-    ) -> Result<Self, KafkaError> {
+    pub fn new(config: &kafka::Config, handler: M) -> Result<Self, KafkaError> {
         let config = config.clone();
         let mut cfg = ClientConfig::new();
         cfg.extend(config.properties.into_iter().map(|(k, v)| (k, v.into())));
@@ -47,14 +41,13 @@ where
         Ok(Self {
             consumer: rdkafka_consumer,
             application_error: PhantomData,
-            topics,
             handler,
         })
     }
 
     /// start consuming by subscribing to topics and polling for items (via [`rdkafka::consumer::StreamConsumer`])
     pub async fn start(&self) -> Result<(), StreamError<DE, AE>> {
-        self.consumer.subscribe(self.topics)?;
+        self.consumer.subscribe(M::topics())?;
 
         self.consumer
             .stream()

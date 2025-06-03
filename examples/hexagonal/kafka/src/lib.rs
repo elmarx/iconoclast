@@ -5,7 +5,6 @@ mod message_handler;
 mod topic;
 
 pub use topic::DecodeError;
-pub use topic::TOPICS;
 
 // some helper structs until we can do `trait MyMessageHandler = MessageHandler<inbound::EventHandlerError, Message = topic::TopicMessages>`…
 /// the [`MessageHandler`]'s application-error (type `AE`)

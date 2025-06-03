@@ -24,7 +24,7 @@ impl BuildingBlocks {
 
         let app = web::init(hello_service.clone());
         let message_handler = MessageHandler::new(hello_service);
-        let consumer = kafka::Consumer::new(&settings.kafka, messages::TOPICS, message_handler)?;
+        let consumer = kafka::Consumer::new(&settings.kafka, message_handler)?;
 
         Ok(Self { app, consumer })
     }
