@@ -25,6 +25,12 @@ gcloud = [
     "dep:http-body-util",
 ]
 mgmt-axum = []
+mgmt-hyper = [
+    "dep:hyper",
+    "dep:hyper-util",
+    "dep:http-body-util",
+    "dep:tower"
+]
 
 
 [dependencies]
@@ -45,6 +51,7 @@ futures = { version = "0.3.31", optional = true }
 tokio-stream = { version = "0.1.17", optional = true }
 tower-livereload = { version = "0.9.6", optional = true }
 config = { version = "0.15.11", features = ["toml"], optional = true }
+tower = { version = "0.5.2", optional = true }
 
 [dev-dependencies]
 faux = "0.1.12"
