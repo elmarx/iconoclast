@@ -1,5 +1,5 @@
 use crate::ServiceSettings;
-use adapter_kafka::*;
+use adapter_kafka::{ApplicationError, DecodeError, KafkaListener, Message};
 use adapter_repository as repository;
 use adapter_repository::MigrateError;
 use adapter_web as web;
@@ -28,7 +28,7 @@ pub async fn wire(
 
     let service = TodoService::new(task_repository);
     let kafka_listener = KafkaListener::new(service.clone());
-    let consumer = kafka::Consumer::new(&settings.kafka, TOPICS, kafka_listener)?;
+    let consumer = kafka::Consumer::new(&settings.kafka, kafka_listener)?;
 
     let router = web::init(service);
 

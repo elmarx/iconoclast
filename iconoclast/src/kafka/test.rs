@@ -24,6 +24,10 @@ struct TestHandler {}
 impl MessageHandler<Infallible> for TestHandler {
     type Message = Pl;
 
+    fn topics() -> &'static [&'static str] {
+        &["hello"]
+    }
+
     async fn handle(&self, _payload: Pl) -> Result<(), Infallible> {
         unimplemented!("mock")
     }
@@ -70,7 +74,7 @@ async fn smoketest() {
         properties: HashMap::new(),
     };
 
-    let consumer = Consumer::new(&config, &["hello"], service).unwrap();
+    let consumer = Consumer::new(&config, service).unwrap();
 
     let task = tokio::task::spawn(async move { consumer.start().await });
 

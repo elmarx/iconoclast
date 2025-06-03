@@ -29,6 +29,10 @@ impl MessageHandler {
 impl kafka::MessageHandler<LogicalError> for MessageHandler {
     type Message = Payload;
 
+    fn topics() -> &'static [&'static str] {
+        model::messages::TOPICS
+    }
+
     fn handle(
         &self,
         Payload(msg): Self::Message,

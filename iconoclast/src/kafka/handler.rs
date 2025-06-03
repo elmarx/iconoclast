@@ -11,5 +11,8 @@ pub trait MessageHandler<AE: Error + Send + Sync> {
     /// This is typically an enum, where each variant is a message for a topic.
     type Message;
 
+    /// topics this MessageHandler handles, topics to subscribe to
+    fn topics() -> &'static [&'static str];
+
     fn handle(&self, kafka_message: Self::Message) -> impl Future<Output = Result<(), AE>>;
 }
