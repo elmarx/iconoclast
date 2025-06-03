@@ -1,3 +1,6 @@
 [workspace]
 resolver = "2"
 members = ["application", "domain", "errors", "kafka", "main", "repository", "web"]
+
+[profile.dev.package.sqlx-macros]
+opt-level = 3
