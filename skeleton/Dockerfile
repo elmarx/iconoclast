@@ -1,4 +1,6 @@
 FROM rust:1.87.0 AS builder
+# build iconoclast from source directly
+ARG ICONOCLAST_SOURCE=0
 WORKDIR /usr/src/service
 
 RUN apt-get update && apt-get install -y libssl-dev libsasl2-dev clang
@@ -33,7 +35,7 @@ RUN mkdir -p main/src/bin && \
   cargo build --release && \
   rm -rf main/src
 
-# now compile the real code
+# now copy over the real sources
 COPY ./config.default.toml .
 COPY application application
 COPY domain domain
@@ -46,6 +48,10 @@ COPY web web
 # update the timestamps so cargo picks up the actual code
 RUN touch application/src/lib.rs domain/src/lib.rs errors/src/lib.rs kafka/src/lib.rs repository/src/lib.rs web/src/lib.rs
 
+# patch workspace file to use iconoclast from source
+RUN if [ "$ICONOCLAST_SOURCE" != "0" ]; then echo "[patch.\"crates-io\"]\n\niconoclast = { git = \"https://github.com/elmarx/iconoclast.git\", rev = \"$ICONOCLAST_SOURCE\" }" >> Cargo.toml; fi;
+
+# and finally compile the actual code
 RUN cargo install --locked --path main --root /usr/local
 
 FROM debian:stable-slim
