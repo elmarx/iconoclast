@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.3.0...iconoclast-v0.3.1) - 2025-06-03
+
+### Fixed
+
+- *(deps)* update rust crate tracing-opentelemetry to 0.31.0
+
 ## [0.3.0](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.2.0...iconoclast-v0.3.0) - 2025-06-03
 
 ### Added
