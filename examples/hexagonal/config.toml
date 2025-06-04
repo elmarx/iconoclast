@@ -2,5 +2,10 @@
 port = 8080
 
 [kafka]
+# rdkafka-properties, see https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md#global-configuration-properties
 "group.id" = "iconoclast-hexagonal-demo"
 "auto.offset.reset" = "beginning"
+# depending on the host configuration, there might be connection-problems to the kafka-broker
+# for the demo (where the container runs on localhost) it's safe to disable ipv6
+# see also https://github.com/confluentinc/confluent-kafka-python/issues/229#issuecomment-322222919
+"broker.address.family" = "v4"
