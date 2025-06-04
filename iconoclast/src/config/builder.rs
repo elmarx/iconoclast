@@ -51,8 +51,8 @@ impl<'a> ConfigBuilder<'a> {
     ///
     /// fails if the underlying [`config::builder::ConfigBuilder::<config::builder::DefaultState>::build`] or [`config::config::Config::try_deserialize`] fails
     pub fn emerge<'de, T: ServiceConfig<'de>>(self) -> Result<T, ConfigError> {
-        let config_file =
-            std::env::var(self.default_config).unwrap_or_else(|_| self.config_file.to_string());
+        let config_file = std::env::var(self.config_path_env_variable)
+            .unwrap_or_else(|_| self.config_file.to_string());
 
         let settings = config::Config::builder()
             .add_source(File::from_str(self.default_config, FileFormat::Toml))
