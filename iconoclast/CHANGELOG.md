@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.3.0...iconoclast-v0.3.1) - 2025-06-04
+
+### Added
+
+- make database_url unsettable with an empty string
+- do not start kafka consumer if list of topics is empty
+
+### Fixed
+
+- overwriting config file location via env-variable
+- *(deps)* update rust crate tracing-opentelemetry to 0.31.0
+
+### Other
+
+- implement a health-service with hyper
+- make the axum-management service a feature
+
 ## [0.3.0](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.2.0...iconoclast-v0.3.0) - 2025-06-03
 
 ### Added
