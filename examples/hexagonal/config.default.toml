@@ -1,3 +1,6 @@
+# these are default settings that will be embedded into the binary upon compilation i.e.: hard-coded defaults
+# per-environment-configuration etc. would go to the config.toml
+
 database_url = "postgres://iconoclast:iconoclast@localhost/iconoclast"
 
 [iconoclast]
