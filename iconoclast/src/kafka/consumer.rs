@@ -8,6 +8,7 @@ use rdkafka::message::BorrowedMessage;
 use std::error::Error;
 use std::marker::PhantomData;
 use tokio_stream::StreamExt;
+use tracing::warn;
 
 pub struct Consumer<M, KM, DE, AE>
 where
@@ -47,7 +48,14 @@ where
 
     /// start consuming by subscribing to topics and polling for items (via [`rdkafka::consumer::StreamConsumer`])
     pub async fn start(&self) -> Result<(), StreamError<DE, AE>> {
-        self.consumer.subscribe(M::topics())?;
+        let topics = M::topics();
+
+        if topics.is_empty() {
+            warn!("NOT starting kafka-consumer as list of topics is empty.");
+            return Ok(());
+        }
+
+        self.consumer.subscribe(topics)?;
 
         self.consumer
             .stream()
