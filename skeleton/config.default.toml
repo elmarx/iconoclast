@@ -2,6 +2,7 @@
 # per-environment-configuration etc. that override these defaults would go to the config.toml
 # this file may also serve as a simple reference for possible configuration options
 
+# unset with database_url = ""
 database_url = "postgres://iconoclast:iconoclast@localhost/iconoclast"
 
 [iconoclast]
