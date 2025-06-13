@@ -25,17 +25,19 @@ If the compilation fails with errors from `sqlx::query!()` like
 SQLX validates SQL queries and types at compile-time by either connecting to the database or by using pre-generated
 db-metadata (from `cargo sqlx prepare`). The demo comes with those metadata.
 
-*If* a `DATABASE_URL`-environment variable is set, it takes precedence over the metadata, the migrations need to be run
-manually in `repository` via `cargo sqlx migrate run` to make the DB ready for type-introspection from sqlx.
+*If* a
+`DATABASE_URL`-environment variable is set, it takes precedence over the metadata, the migrations need to be run
+manually in `repository` via
+`cargo sqlx migrate run` to make the DB ready for type-introspection from sqlx.
 
 # Architecture
 
 Each component is its own crate to enforce decoupling.
 
-- [domain](./domain) defines the domain model (including events).
+- [domain](./domain) defines the domain model (including events): What the system *is*.
   It must not depend on any of the other crates; also it depends only on a very few other crates,
   e.g. [uuid](https://crates.io/crates/uuid)
-- [application](./application) is the core, defining *inbound* and
+- [application](./application) is the core, what the system *does*, defining *inbound* and
   *outbound* ports (in the form of [traits](https://doc.rust-lang.org/book/ch10-02-traits.html)) and also implementing
   the application logic.
   It should only reference the *domain*… with an exception, the…:

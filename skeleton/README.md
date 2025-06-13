@@ -16,10 +16,10 @@ This is the recommended way to structure a rust service.
 
 Each component is its own crate to enforce decoupling.
 
-- [domain](domain) defines the domain model (including events).
+- [domain](domain) defines the domain model (including events): What the system *is*.
   It must not depend on any of the other crates; also it depends only on a very few other crates,
   e.g. [uuid](https://crates.io/crates/uuid)
-- [application](application/README.md) is the core, defining *inbound* and
+- [application](application/README.md) is the core, what the system *does*, defining *inbound* and
   *outbound* ports (in the form of [traits](https://doc.rust-lang.org/book/ch10-02-traits.html)) and also implementing
   the application logic.
   It should only reference the *domain*… with an exception, the…:
