@@ -24,7 +24,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("{settings:?}");
 
-    let (router, consumer) = wire(&settings).await?;
+    let (router, run_migrations, consumer) = wire(&settings).await?;
+
+    // run migrations before starting up the service
+    run_migrations().await?;
 
     let (_main_server, _management_server, _consumer) = tokio::try_join!(
         server::start(settings.iconoclast.port, router).map_err(iconoclast::StartupError::from),

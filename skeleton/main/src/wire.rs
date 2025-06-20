@@ -1,6 +1,7 @@
 use crate::ServiceSettings;
 use adapter_kafka::*;
 use adapter_repository as repository;
+use adapter_repository::MigrateError;
 use adapter_web as web;
 use iconoclast::kafka;
 use iconoclast::kafka::Consumer;
@@ -11,6 +12,7 @@ pub async fn wire(
 ) -> Result<
     (
         web::Router,
+        impl AsyncFnOnce() -> Result<(), MigrateError>,
         Consumer<
             impl kafka::MessageHandler<ApplicationError, Message = Message>,
             Message,
@@ -29,7 +31,5 @@ pub async fn wire(
 
     let router = web::init();
 
-    run_migrations().await?;
-
-    Ok((router, consumer))
+    Ok((router, run_migrations, consumer))
 }
