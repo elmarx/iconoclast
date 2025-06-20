@@ -1,6 +1,6 @@
 use application::outbound::TaskRepository;
 use domain::TaskId;
-use errors::RepositoryError;
+use errors::SqlxError;
 use futures::Stream;
 
 use sqlx::PgPool;
@@ -19,7 +19,7 @@ impl Repository {
 
 #[async_trait::async_trait]
 impl TaskRepository for Repository {
-    async fn insert(&self, desc: &str) -> Result<TaskId, RepositoryError> {
+    async fn insert(&self, desc: &str) -> Result<TaskId, SqlxError> {
         let rec = sqlx::query!(
             r#"INSERT INTO task (description) VALUES ($1) RETURNING task_id"#,
             desc
@@ -30,7 +30,7 @@ impl TaskRepository for Repository {
         Ok(TaskId::from(rec.task_id))
     }
 
-    async fn insert_with_id(&self, task_id: TaskId, desc: &str) -> Result<(), RepositoryError> {
+    async fn insert_with_id(&self, task_id: TaskId, desc: &str) -> Result<(), SqlxError> {
         sqlx::query!(
             r#"INSERT INTO task (task_id, description) VALUES ($1, $2)"#,
             task_id.0,
@@ -42,7 +42,7 @@ impl TaskRepository for Repository {
         Ok(())
     }
 
-    async fn find_by_id(&self, id: TaskId) -> Result<Option<domain::Task>, RepositoryError> {
+    async fn find_by_id(&self, id: TaskId) -> Result<Option<domain::Task>, SqlxError> {
         sqlx::query_as!(
             domain::Task,
             "select task_id as id, description from task where task_id = $1",
@@ -52,7 +52,7 @@ impl TaskRepository for Repository {
         .await
     }
 
-    async fn delete_by_id(&self, id: TaskId) -> Result<bool, RepositoryError> {
+    async fn delete_by_id(&self, id: TaskId) -> Result<bool, SqlxError> {
         let affected = sqlx::query!("DELETE FROM task WHERE task_id = $1", id.0)
             .execute(&self.pool)
             .await?;
@@ -60,7 +60,7 @@ impl TaskRepository for Repository {
         Ok(0 < affected.rows_affected())
     }
 
-    fn find_all(&self) -> impl Stream<Item = Result<domain::Task, RepositoryError>> {
+    fn find_all(&self) -> impl Stream<Item = Result<domain::Task, SqlxError>> {
         sqlx::query_as!(domain::Task, "select task_id as id, description from task")
             .fetch(&self.pool)
     }

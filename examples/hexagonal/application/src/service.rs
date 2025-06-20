@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use domain::TaskId;
 use domain::event::Task::{Added, Deleted};
 use domain::{Task, event};
-use errors::RepositoryError;
+use errors::SqlxError;
 use futures::Stream;
 
 #[derive(Clone)]
@@ -20,18 +20,18 @@ impl<T: TaskRepository> TodoService<T> {
 
 #[async_trait]
 impl<T: TaskRepository> Endpoint for TodoService<T> {
-    fn list_todos(&self) -> impl Stream<Item = Result<Task, RepositoryError>> {
+    fn list_todos(&self) -> impl Stream<Item = Result<Task, SqlxError>> {
         self.repository.find_all()
     }
 
-    async fn add_todo(&self, desc: &str) -> Result<TaskId, RepositoryError> {
+    async fn add_todo(&self, desc: &str) -> Result<TaskId, SqlxError> {
         self.repository.insert(desc).await
     }
 }
 
 #[async_trait]
 impl<T: TaskRepository> TaskEventHandler for TodoService<T> {
-    async fn task(&self, e: event::Task) -> Result<(), RepositoryError> {
+    async fn task(&self, e: event::Task) -> Result<(), SqlxError> {
         match e {
             Deleted(task_id) => {
                 self.repository.delete_by_id(task_id).await?;

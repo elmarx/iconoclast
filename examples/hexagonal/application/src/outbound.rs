@@ -1,19 +1,19 @@
 use domain::{Task, TaskId};
-use errors::RepositoryError;
+use errors::SqlxError;
 use futures::Stream;
 
 #[cfg_attr(test, mockall::automock)]
 #[async_trait::async_trait]
 pub trait TaskRepository: Send + Sync {
-    async fn insert(&self, desc: &str) -> Result<TaskId, RepositoryError>;
+    async fn insert(&self, desc: &str) -> Result<TaskId, SqlxError>;
 
-    async fn insert_with_id(&self, task_id: TaskId, desc: &str) -> Result<(), RepositoryError>;
+    async fn insert_with_id(&self, task_id: TaskId, desc: &str) -> Result<(), SqlxError>;
 
-    async fn find_by_id(&self, id: TaskId) -> Result<Option<Task>, RepositoryError>;
+    async fn find_by_id(&self, id: TaskId) -> Result<Option<Task>, SqlxError>;
 
-    async fn delete_by_id(&self, id: TaskId) -> Result<bool, RepositoryError>;
+    async fn delete_by_id(&self, id: TaskId) -> Result<bool, SqlxError>;
 
-    fn find_all(&self) -> impl Stream<Item = Result<Task, RepositoryError>> + Send;
+    fn find_all(&self) -> impl Stream<Item = Result<Task, SqlxError>> + Send;
 }
 
 #[cfg(test)]

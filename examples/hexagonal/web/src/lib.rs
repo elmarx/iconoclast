@@ -38,7 +38,7 @@ mod test {
     use application::inbound;
     use axum::body::Body;
     use axum::http::Request;
-    use errors::RepositoryError;
+    use errors::SqlxError;
     use futures::stream;
     use futures::stream::Stream;
     use http_body_util::BodyExt;
@@ -51,12 +51,12 @@ mod test {
 
     #[async_trait::async_trait]
     impl inbound::Endpoint for MockEndpoint {
-        fn list_todos(&self) -> impl Stream<Item = Result<domain::Task, RepositoryError>> + Send {
+        fn list_todos(&self) -> impl Stream<Item = Result<domain::Task, SqlxError>> + Send {
             let todos = self.todos.iter().map(|t| Ok(t.clone()));
             stream::iter(todos)
         }
 
-        async fn add_todo(&self, _desc: &str) -> Result<domain::TaskId, RepositoryError> {
+        async fn add_todo(&self, _desc: &str) -> Result<domain::TaskId, SqlxError> {
             unimplemented!()
         }
     }
