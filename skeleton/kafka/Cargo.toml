@@ -7,7 +7,7 @@ publish = false
 [dependencies]
 domain = { path = "../domain" }
 application = { path = "../application" }
-rdkafka = { version = "0.37.0", default-features = false }
+rdkafka = { version = "0.38.0", default-features = false }
 uuid = { version = "1.17.0", features = ["v4"] }
 thiserror = "2.0.12"
 iconoclast = { features = ["kafka"], version = "0.3.1" }
