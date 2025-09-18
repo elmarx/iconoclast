@@ -1,6 +1,6 @@
+use sqlx::PgPool;
 use sqlx::migrate::Migrator;
 use sqlx::postgres::{PgConnectOptions, PgPoolOptions};
-use sqlx::PgPool;
 
 static MIGRATOR: Migrator = sqlx::migrate!();
 
