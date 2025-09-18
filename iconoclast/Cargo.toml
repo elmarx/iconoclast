@@ -31,6 +31,7 @@ mgmt-hyper = [
     "dep:http-body-util",
     "dep:tower"
 ]
+persistence = []
 
 
 [dependencies]
