@@ -23,6 +23,9 @@ COPY main/Cargo.toml main/
 COPY repository/Cargo.toml repository/
 COPY web/Cargo.toml web/
 
+# patch workspace file to use iconoclast from source
+RUN if [ "$ICONOCLAST_SOURCE" != "0" ]; then echo "[patch.\"crates-io\"]\n\niconoclast = { git = \"https://github.com/elmarx/iconoclast.git\", rev = \"$ICONOCLAST_SOURCE\" }" >> Cargo.toml; fi;
+
 # compile all dependencies with a dummy for improved caching
 RUN mkdir -p main/src/bin && \
   touch application/src/lib.rs && \
@@ -47,9 +50,6 @@ COPY web web
 
 # update the timestamps so cargo picks up the actual code
 RUN touch application/src/lib.rs domain/src/lib.rs errors/src/lib.rs kafka/src/lib.rs repository/src/lib.rs web/src/lib.rs
-
-# patch workspace file to use iconoclast from source
-RUN if [ "$ICONOCLAST_SOURCE" != "0" ]; then echo "[patch.\"crates-io\"]\n\niconoclast = { git = \"https://github.com/elmarx/iconoclast.git\", rev = \"$ICONOCLAST_SOURCE\" }" >> Cargo.toml; fi;
 
 # and finally compile the actual code
 RUN cargo install --locked --path main --root /usr/local
