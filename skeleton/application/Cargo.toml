@@ -8,8 +8,8 @@ publish = false
 domain = { path = "../domain" }
 errors = { path = "../errors" }
 futures = "0.3.31"
-async-trait = "0.1.88"
+async-trait = "0.1.89"
 
 [dev-dependencies]
-tokio = { version = "1.44.2", default-features = false, features = ["rt", "macros"] }
+tokio = { version = "1.47.1", default-features = false, features = ["rt", "macros"] }
 mockall = "0.13.1"
