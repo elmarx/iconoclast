@@ -58,10 +58,10 @@ FROM debian:stable-slim
 
 RUN apt-get update && apt-get install -y libssl3 libsasl2-2
 ENV ICONOCLAST_LOGGING=json
-RUN adduser --system iconoclast
+RUN useradd -r iconoclast
 COPY --from=builder /usr/local/bin/iconoclastd /usr/local/bin
 
 USER iconoclast
-WORKDIR /home/iconoclast
+WORKDIR /var/lib/iconoclast
 
 CMD [ "iconoclastd" ]
