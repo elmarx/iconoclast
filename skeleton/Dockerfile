@@ -54,7 +54,7 @@ RUN if [ "$ICONOCLAST_SOURCE" != "0" ]; then echo "[patch.\"crates-io\"]\n\nicon
 # and finally compile the actual code
 RUN cargo install --locked --path main --root /usr/local
 
-FROM debian:stable-slim
+FROM debian:trixie-20250908-slim
 
 RUN apt-get update && apt-get install -y libssl3 libsasl2-2
 ENV ICONOCLAST_LOGGING=json
