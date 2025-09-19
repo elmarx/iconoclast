@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.3.1...iconoclast-v0.3.2) - 2025-09-19
+
+### Fixed
+
+- *(deps)* update rust crate rdkafka to 0.38.0
+
+### Other
+
+- support openapi via utoipa
+- make database/persistence optional
+
 ## [0.3.1](https://github.com/elmarx/iconoclast/compare/iconoclast-v0.3.0...iconoclast-v0.3.1) - 2025-06-04
 
 ### Added
