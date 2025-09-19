@@ -32,6 +32,11 @@ mgmt-hyper = [
     "dep:tower"
 ]
 persistence = []
+utoipa = [
+    "dep:utoipa",
+    "dep:utoipa-axum",
+    "dep:utoipa-swagger-ui"
+]
 
 
 [dependencies]
@@ -54,6 +59,9 @@ tower-livereload = { version = "0.9.6", optional = true }
 config = { version = "0.15.11", features = ["toml"], optional = true }
 tower = { version = "0.5.2", optional = true }
 serde_with = "3.12.0"
+utoipa = { version = "5.4.0", optional = true, features = ["axum_extras"] }
+utoipa-axum = { version = "0.2.0", optional = true }
+utoipa-swagger-ui = { version = "9.0.2", optional = true, features = ["axum", "vendored"] }
 
 [dev-dependencies]
 faux = "0.1.12"
