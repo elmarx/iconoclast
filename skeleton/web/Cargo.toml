@@ -8,7 +8,7 @@ publish = false
 domain = { path = "../domain" }
 errors = { path = "../errors" }
 axum = { version = "0.8.4", features = ["macros"] }
-axum-extra = { version = "0.10.1", features = ["error-response"] }
+axum-extra = { version = "0.12.0", features = ["error-response"] }
 application = { path = "../application" }
 futures = "0.3.31"
 itertools = "0.14.0"
