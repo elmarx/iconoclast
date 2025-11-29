@@ -1,4 +1,4 @@
-use crate::config::builder::ServiceConfig;
+use crate::config::ServiceConfig;
 use crate::config::iconoclast;
 use serde::Deserialize;
 use serde_with::serde_as;

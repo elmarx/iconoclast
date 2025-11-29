@@ -1,7 +1,5 @@
-use crate::config::DefaultServiceConfig;
+use crate::config::{DefaultServiceConfig, ServiceConfig};
 use config::{ConfigError, Environment, File, FileFormat};
-use serde::Deserialize;
-
 pub struct ConfigBuilder<'a> {
     /// compile-time default config (included via `include_str`)
     pub default_config: &'a str,
@@ -11,11 +9,6 @@ pub struct ConfigBuilder<'a> {
     pub env_prefix: &'a str,
     /// name of the env-variable to override the default config file path
     pub config_path_env_variable: &'a str,
-}
-
-pub trait ServiceConfig<'de>: Deserialize<'de> {
-    #[cfg(feature = "kafka")]
-    fn with_kafka_properties(self, properties: Vec<(String, String)>) -> Self;
 }
 
 impl<'a> ConfigBuilder<'a> {
