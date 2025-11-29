@@ -19,7 +19,7 @@ pub struct Server {
 }
 
 impl Server {
-    #[must_use] 
+    #[must_use]
     pub fn new(router: Router) -> Self {
         Self {
             port: 8080,
@@ -33,7 +33,7 @@ impl Server {
         }
     }
 
-    #[must_use] 
+    #[must_use]
     pub fn with_port(mut self, port: u16) -> Self {
         self.port = port;
         self
@@ -51,11 +51,17 @@ impl Server {
         self
     }
 
+    /// # Errors
+    ///
+    /// see `start`: may fail to bind to the given port
     #[cfg(not(feature = "utoipa"))]
     pub async fn start(self) -> Result<(), io::Error> {
         start(self.port, self.router).await
     }
 
+    /// # Errors
+    ///
+    /// see `start`: may fail to bind to the given port
     #[cfg(feature = "utoipa")]
     pub async fn start(self) -> Result<(), io::Error> {
         let (router, api) = self.router.split_for_parts();
