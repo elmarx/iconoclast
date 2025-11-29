@@ -36,6 +36,8 @@ impl MessageHandler<Infallible> for TestHandler {
 #[derive(Debug, PartialEq, Eq)]
 struct Pl(String);
 
+// this is just (lazy) test-code, we want to conform to the interface, this should never fail, and if it does: it's just a panic/unwrap in tests
+#[allow(clippy::infallible_try_from)]
 impl TryFrom<&BorrowedMessage<'_>> for Pl {
     type Error = Infallible;
 
