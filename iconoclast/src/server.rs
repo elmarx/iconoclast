@@ -19,6 +19,7 @@ pub struct Server {
 }
 
 impl Server {
+    #[must_use] 
     pub fn new(router: Router) -> Self {
         Self {
             port: 8080,
@@ -32,6 +33,7 @@ impl Server {
         }
     }
 
+    #[must_use] 
     pub fn with_port(mut self, port: u16) -> Self {
         self.port = port;
         self
