@@ -2,7 +2,7 @@
 services:
   postgres:
     # when changing the image/tag, make sure to also update testcontainers, too
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_DB: iconoclast
       POSTGRES_USER: iconoclast
