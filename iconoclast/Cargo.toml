@@ -55,7 +55,7 @@ hyper = { version = "1.7.0", optional = true }
 thiserror = "2.0.16"
 futures = { version = "0.3.31", optional = true }
 tokio-stream = { version = "0.1.17", optional = true }
-tower-livereload = { version = "0.9.6", optional = true }
+tower-livereload = { version = "0.10.0", optional = true }
 config = { version = "0.15.16", features = ["toml"], optional = true }
 tower = { version = "0.5.2", optional = true }
 serde_with = "3.14.0"
