@@ -1,4 +1,4 @@
-FROM rust:1.90.0 AS builder
+FROM rust:1.92.0 AS builder
 # build iconoclast from source directly
 ARG ICONOCLAST_SOURCE=0
 WORKDIR /usr/src/service
