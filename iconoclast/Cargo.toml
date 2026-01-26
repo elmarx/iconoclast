@@ -42,7 +42,7 @@ utoipa = [
 [dependencies]
 axum = { version = "0.8.4", default-features = false, features = ["json", "tokio", "http1"] }
 listenfd = { version = "1.0.2", optional = true }
-rdkafka = { version = "0.38.0", features = ["sasl", "ssl", "zstd"], optional = true }
+rdkafka = { version = "0.39.0", features = ["sasl", "ssl", "zstd"], optional = true }
 serde = { version = "1.0.225", features = ["derive"] }
 tokio = { version = "1.47.1", features = ["io-std", "net"] }
 tracing = "0.1.41"
