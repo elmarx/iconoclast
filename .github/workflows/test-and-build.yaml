@@ -78,7 +78,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image with iconoclast from crates.io
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: skeleton
           cache-from: type=gha
@@ -95,7 +95,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker image with iconoclast from source
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: skeleton
           build-args: ICONOCLAST_SOURCE=${{ github.sha }}
