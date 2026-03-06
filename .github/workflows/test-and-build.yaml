@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build Docker image with iconoclast from crates.io
         uses: docker/build-push-action@v6
@@ -92,7 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build Docker image with iconoclast from source
         uses: docker/build-push-action@v6
