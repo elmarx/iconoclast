@@ -5,4 +5,4 @@ edition = "2024"
 publish = false
 
 [dependencies]
-sqlx = { version = "0.8.6", default-features = false }
+sqlx = { version = "0.9.0", default-features = false }
