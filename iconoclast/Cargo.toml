@@ -60,7 +60,7 @@ config = { version = "0.15.16", features = ["toml"], optional = true }
 tower = { version = "0.5.2", optional = true }
 serde_with = "3.14.0"
 utoipa = { version = "5.4.0", optional = true, features = ["axum_extras"] }
-utoipa-axum = { version = "0.2.0", optional = true }
+utoipa-axum = { version = "0.3.0", optional = true }
 utoipa-swagger-ui = { version = "9.0.2", optional = true, features = ["axum", "vendored"] }
 
 [dev-dependencies]
